@@ -5,6 +5,7 @@ import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: AuthOptions = {
+  // Remove SupabaseAdapter - use direct database connection
   providers: [
     // 🔐 GitHub OAuth login
     GitHubProvider({
@@ -46,20 +47,66 @@ export const authOptions: AuthOptions = {
     signIn: "/admin/login",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      try {
+        // Allow GitHub login for specific users
+        if (account?.provider === "github") {
+          const allowedGithubUsers = ["TugusArtaa", "2215323039@pnb.ac.id"];
+
+          const isAllowed =
+            allowedGithubUsers.includes(user.email!) ||
+            allowedGithubUsers.includes(
+              (profile as { login?: string })?.login!
+            );
+
+          if (!isAllowed) {
+            console.log(
+              "GitHub user not allowed:",
+              user.email,
+              (profile as { login?: string })?.login
+            );
+            return false;
+          }
+
+          // Create or update user in database after GitHub login
+          try {
+            await prisma.user.upsert({
+              where: { email: user.email! },
+              update: {
+                name: user.name,
+                image: user.image,
+              },
+              create: {
+                email: user.email!,
+                name: user.name,
+                image: user.image,
+              },
+            });
+          } catch (dbError) {
+            console.error("Database error:", dbError);
+            return false;
+          }
+        }
+        return true;
+      } catch (error) {
+        console.error("SignIn callback error:", error);
+        return false;
+      }
+    },
     async session({ session, token }) {
-      if (token?.sub && session.user) {
+      if (session?.user && token?.sub) {
         session.user.id = token.sub;
       }
-
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ user, token }) {
       if (user) {
-        token.id = user.id;
+        token.uid = user.id;
       }
       return token;
     },
   },
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
 };
 
