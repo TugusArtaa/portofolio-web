@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import StatsCard from "@/components/shared/StatsCard";
+import QuickActionCard from "@/components/shared/QuickActionCard";
+import WelcomeSection from "@/components/shared/WelcomeSection";
 
 interface DashboardStats {
   projects: number;
@@ -64,12 +66,11 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, []);
 
-  const statsCards = [
+  const statsCardsData = [
     {
       title: "Total Proyek",
       value: stats.projects,
       change: stats.projects > 0 ? `${stats.projects} proyek` : "Belum ada",
-      trend: "neutral",
       icon: (
         <svg
           className="w-8 h-8"
@@ -90,12 +91,12 @@ export default function DashboardPage() {
       lightBg: "from-blue-50 to-blue-100",
       darkBg: "from-blue-900/20 to-blue-800/30",
       href: "/admin/projects",
+      showProgressBar: true,
     },
     {
       title: "Skills Aktif",
       value: stats.skills,
       change: stats.skills > 0 ? `${stats.skills} skills` : "Belum ada",
-      trend: "neutral",
       icon: (
         <svg
           className="w-8 h-8"
@@ -116,12 +117,12 @@ export default function DashboardPage() {
       lightBg: "from-emerald-50 to-emerald-100",
       darkBg: "from-emerald-900/20 to-emerald-800/30",
       href: "/admin/skills",
+      showProgressBar: true,
     },
     {
       title: "Tech Stack",
       value: stats.views,
       change: stats.views > 0 ? `${stats.views} teknologi` : "Belum ada",
-      trend: "neutral",
       icon: (
         <svg
           className="w-8 h-8"
@@ -142,6 +143,7 @@ export default function DashboardPage() {
       lightBg: "from-purple-50 to-purple-100",
       darkBg: "from-purple-900/20 to-purple-800/30",
       href: "/admin/projects",
+      showProgressBar: true,
     },
     {
       title: "Proyek Terbaru",
@@ -150,7 +152,6 @@ export default function DashboardPage() {
         stats.recentProjects.length > 0
           ? `${stats.recentProjects.length} terbaru`
           : "Belum ada",
-      trend: "neutral",
       icon: (
         <svg
           className="w-8 h-8"
@@ -171,10 +172,11 @@ export default function DashboardPage() {
       lightBg: "from-amber-50 to-amber-100",
       darkBg: "from-amber-900/20 to-amber-800/30",
       href: "/admin/projects",
+      showProgressBar: true,
     },
   ];
 
-  const quickActions = [
+  const quickActionsData = [
     {
       title: "Tambah Proyek",
       description: "Buat proyek baru",
@@ -195,7 +197,6 @@ export default function DashboardPage() {
         </svg>
       ),
       gradient: "from-blue-500 to-blue-600",
-      textColor: "text-blue-600 dark:text-blue-400",
     },
     {
       title: "Kelola Skills",
@@ -217,7 +218,6 @@ export default function DashboardPage() {
         </svg>
       ),
       gradient: "from-emerald-500 to-emerald-600",
-      textColor: "text-emerald-600 dark:text-emerald-400",
     },
     {
       title: "Edit Profil",
@@ -239,7 +239,6 @@ export default function DashboardPage() {
         </svg>
       ),
       gradient: "from-purple-500 to-purple-600",
-      textColor: "text-purple-600 dark:text-purple-400",
     },
     {
       title: "Pengaturan",
@@ -261,7 +260,6 @@ export default function DashboardPage() {
         </svg>
       ),
       gradient: "from-slate-500 to-slate-600",
-      textColor: "text-slate-600 dark:text-slate-400",
     },
   ];
 
@@ -307,160 +305,49 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-white dark:bg-slate-900">
       <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
         <div className="max-w-7xl mx-auto space-y-8">
-          {/* Enhanced Welcome Section*/}
-          <div className="relative bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-slate-700/50 shadow-md p-6 sm:p-8 lg:p-10 mb-8 overflow-hidden">
-            {/* Background decoration - matching PageHeader */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-3xl translate-y-24 -translate-x-24"></div>
+          {/* Welcome Section */}
+          <WelcomeSection
+            title="Selamat Datang Kembali!"
+            subtitle="Kelola portfolio Anda dengan mudah dan efisien"
+            lastUpdated={stats.lastUpdated}
+            icon={
+              <svg
+                className="w-16 h-16 text-slate-600 dark:text-slate-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+            }
+          />
 
-            <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-              <div className="space-y-2">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 dark:from-white dark:via-blue-200 dark:to-indigo-200 bg-clip-text text-transparent leading-tight">
-                  Selamat Datang Kembali!
-                </h1>
-                <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg lg:text-xl font-medium">
-                  Kelola portfolio Anda dengan mudah dan efisien
-                </p>
-                <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-500">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span>Terakhir diperbarui: {stats.lastUpdated}</span>
-                </div>
-              </div>
-              <div className="hidden lg:block">
-                <div className="w-32 h-32 bg-slate-100/50 dark:bg-slate-700/50 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-slate-200/50 dark:border-slate-600/50">
-                  <svg
-                    className="w-16 h-16 text-slate-600 dark:text-slate-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Enhanced Stats Cards */}
+          {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {statsCards.map((card, index) => (
-              <Link key={card.title} href={card.href}>
-                <div
-                  className={`group relative overflow-hidden bg-gradient-to-br ${card.lightBg} dark:${card.darkBg} backdrop-blur-sm shadow-md rounded-3xl p-6 border dark:border-slate-700/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-200 hover:-translate-y-2 cursor-pointer`}
-                >
-                  {/* Background decoration */}
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-10 translate-x-10"></div>
-
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className={`w-14 h-14 bg-gradient-to-br ${card.bgGradient} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}
-                      >
-                        {card.icon}
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                          {card.change}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <p
-                        className={`text-3xl lg:text-4xl font-bold ${card.textColor} dark:text-white`}
-                      >
-                        {card.value}
-                      </p>
-                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                        {card.title}
-                      </p>
-                    </div>
-
-                    {/* Progress bar - only show if there's data */}
-                    {card.value > 0 && (
-                      <div className="mt-4 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full bg-gradient-to-r ${card.bgGradient} rounded-full transition-all duration-1000 ease-out`}
-                          style={{
-                            width: `${Math.min(100, (card.value / 10) * 100)}%`,
-                          }}
-                        ></div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Link>
+            {statsCardsData.map((card) => (
+              <StatsCard
+                key={card.title}
+                {...card}
+                isLoading={stats.isLoading}
+              />
             ))}
           </div>
 
-          {/* Enhanced Quick Actions */}
+          {/* Quick Actions */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 Aksi Cepat
               </h2>
-              <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-                <span className="text-sm font-medium">Produktivitas</span>
-              </div>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {quickActions.map((action, index) => (
-                <Link key={action.title} href={action.href}>
-                  <div className="group relative overflow-hidden shadow-md bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-blue-50/50 dark:to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-4">
-                        <div
-                          className={`w-12 h-12 bg-gradient-to-br ${action.gradient} rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform duration-200`}
-                        >
-                          {action.icon}
-                        </div>
-                        <div className="w-8 h-8 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30">
-                          <svg
-                            className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-
-                      <h3 className="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
-                        {action.title}
-                      </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                        {action.description}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
+              {quickActionsData.map((action, index) => (
+                <QuickActionCard key={action.title} {...action} index={index} />
               ))}
             </div>
           </div>

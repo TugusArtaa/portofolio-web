@@ -7,6 +7,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
+import { useToast } from "@/components/ui/toast";
 
 export default function ProjectListPage() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -20,6 +21,7 @@ export default function ProjectListPage() {
     project: null,
   });
   const [isDeleting, setIsDeleting] = useState(false);
+  const { addToast } = useToast();
 
   const itemsPerPage = 6;
 
@@ -31,6 +33,12 @@ export default function ProjectListPage() {
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
+      addToast({
+        type: "error",
+        title: "Gagal Memuat Data",
+        message: "Tidak dapat memuat daftar proyek. Silakan refresh halaman.",
+        duration: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -44,20 +52,41 @@ export default function ProjectListPage() {
     if (!deleteModal.project) return;
 
     setIsDeleting(true);
+    const projectTitle = deleteModal.project.title;
+
     try {
       const response = await fetch(`/api/project/${deleteModal.project.id}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
+        // Success toast
+        addToast({
+          type: "success",
+          title: "Proyek Berhasil Dihapus",
+          message: `"${projectTitle}" telah dihapus dari daftar proyek Anda.`,
+          duration: 4000,
+        });
+
         await fetchProjects();
         setDeleteModal({ isOpen: false, project: null });
       } else {
-        throw new Error("Failed to delete");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Gagal menghapus proyek");
       }
     } catch (error) {
       console.error("Error deleting project:", error);
-      alert("Gagal menghapus proyek. Silakan coba lagi.");
+
+      // Error toast
+      addToast({
+        type: "error",
+        title: "Gagal Menghapus Proyek",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Terjadi kesalahan saat menghapus proyek. Silakan coba lagi.",
+        duration: 6000,
+      });
     } finally {
       setIsDeleting(false);
     }
@@ -65,6 +94,14 @@ export default function ProjectListPage() {
 
   const cancelDelete = () => {
     setDeleteModal({ isOpen: false, project: null });
+
+    // Info toast for cancelled action
+    addToast({
+      type: "info",
+      title: "Penghapusan Dibatalkan",
+      message: "Proyek Anda tetap aman dan tidak ada perubahan yang dilakukan.",
+      duration: 3000,
+    });
   };
 
   useEffect(() => {
@@ -204,8 +241,8 @@ export default function ProjectListPage() {
           onConfirm={confirmDelete}
           isDeleting={isDeleting}
           title="Konfirmasi Hapus"
-          description="Apakah anda yakin ingin menghapus proyek ini?"
-          warningMessage="Semua data proyek termasuk gambar dan informasi lainnya akan hilang permanen."
+          description={`Apakah anda yakin ingin menghapus proyek "${deleteModal.project?.title}"?`}
+          warningMessage="Semua data proyek termasuk gambar dan informasi lainnya akan hilang permanen dan tidak dapat dikembalikan."
         />
       </div>
     </div>

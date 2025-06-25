@@ -5,6 +5,8 @@ import FormLayout from "@/components/shared/FormLayout";
 import FormInput from "@/components/shared/FormInput";
 import ImageUpload from "@/components/shared/ImageUpload";
 import ProjectPreview from "@/components/shared/ProjectPreview";
+import { useToast } from "@/components/ui/toast";
+import { validateForm, projectValidationRules } from "@/lib/validation";
 
 interface ProjectFormProps {
   existing?: any;
@@ -20,8 +22,11 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
     coverImage: "",
     url: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (existing) {
@@ -47,10 +52,52 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         .replace(/(^-|-$)/g, "");
       setForm((prev) => ({ ...prev, [name]: value, slug }));
     }
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleBlur = (fieldName: string) => {
+    setTouched((prev) => ({ ...prev, [fieldName]: true }));
+
+    // Validate single field on blur
+    const fieldValue = form[fieldName as keyof typeof form];
+    const fieldRules = projectValidationRules[fieldName];
+
+    if (fieldRules) {
+      const fieldError = validateField(fieldValue, fieldRules);
+      setErrors((prev) => ({
+        ...prev,
+        [fieldName]: fieldError || "",
+      }));
+    }
   };
 
   const handleSubmit = async () => {
+    // Mark all fields as touched
+    const allTouched = Object.keys(form).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
+    setTouched(allTouched);
+
+    // Validate entire form
+    const validation = validateForm(form, projectValidationRules);
+    setErrors(validation.errors);
+
+    if (!validation.isValid) {
+      addToast({
+        type: "error",
+        title: "Form Tidak Valid",
+        message: "Silakan perbaiki kesalahan pada form sebelum melanjutkan",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
+
     try {
       const method = existing ? "PUT" : "POST";
       const url = existing ? `/api/project/${existing.id}` : "/api/project";
@@ -68,16 +115,66 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
       });
 
       if (response.ok) {
-        if (onSuccess) onSuccess();
+        addToast({
+          type: "success",
+          title: existing
+            ? "Proyek Berhasil Diperbarui!"
+            : "Proyek Berhasil Ditambahkan!",
+          message: existing
+            ? "Perubahan pada proyek telah disimpan"
+            : "Proyek baru telah ditambahkan ke portfolio Anda",
+          duration: 6000,
+        });
+
+        // Small delay to show the toast before redirecting
+        setTimeout(() => {
+          if (onSuccess) onSuccess();
+        }, 1000);
       } else {
-        throw new Error("Failed to save project");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to save project");
       }
     } catch (error) {
       console.error("Error saving project:", error);
-      alert("Terjadi kesalahan saat menyimpan proyek");
+      addToast({
+        type: "error",
+        title: "Gagal Menyimpan Proyek",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Terjadi kesalahan tidak terduga. Silakan coba lagi.",
+        duration: 8000,
+      });
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Helper function to validate field
+  const validateField = (value: string, rules: any): string | null => {
+    if (rules.required && (!value || value.trim() === "")) {
+      return "Field ini wajib diisi";
+    }
+
+    if (!value || value.trim() === "") return null;
+
+    if (rules.minLength && value.length < rules.minLength) {
+      return `Minimal ${rules.minLength} karakter`;
+    }
+
+    if (rules.maxLength && value.length > rules.maxLength) {
+      return `Maksimal ${rules.maxLength} karakter`;
+    }
+
+    if (rules.pattern && !rules.pattern.test(value)) {
+      return "Format tidak valid";
+    }
+
+    if (rules.custom) {
+      return rules.custom(value);
+    }
+
+    return null;
   };
 
   const icons = {
@@ -160,9 +257,12 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         placeholder="Masukkan judul proyek yang menarik"
         value={form.title}
         onChange={handleChange}
+        onBlur={() => handleBlur("title")}
         icon={icons.title}
         iconColor="blue-500"
         required
+        error={touched.title ? errors.title : ""}
+        helpText="Judul yang menarik akan membuat proyek Anda lebih eye-catching"
       />
 
       <FormInput
@@ -171,8 +271,12 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         placeholder="url-friendly-slug"
         value={form.slug}
         onChange={handleChange}
+        onBlur={() => handleBlur("slug")}
         icon={icons.slug}
         iconColor="indigo-500"
+        required
+        error={touched.slug ? errors.slug : ""}
+        helpText="Slug otomatis dibuat dari judul. Gunakan huruf kecil dan tanda (-)"
       />
 
       <FormInput
@@ -182,9 +286,13 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         placeholder="Jelaskan proyek Anda dengan detail yang menarik"
         value={form.description}
         onChange={handleChange}
+        onBlur={() => handleBlur("description")}
         icon={icons.description}
         iconColor="purple-500"
         rows={4}
+        required
+        error={touched.description ? errors.description : ""}
+        helpText="Ceritakan latar belakang, tujuan, dan fitur utama proyek Anda"
       />
 
       <FormInput
@@ -193,17 +301,45 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         placeholder="React, Next.js, TypeScript, Tailwind CSS"
         value={form.techStack}
         onChange={handleChange}
+        onBlur={() => handleBlur("techStack")}
         icon={icons.techStack}
         iconColor="emerald-500"
-        helpText="Pisahkan dengan koma"
+        required
+        error={touched.techStack ? errors.techStack : ""}
+        helpText="Pisahkan dengan koma. Contoh: React, Node.js, MongoDB"
       />
 
-      <ImageUpload
-        label="Cover Image"
-        value={form.coverImage}
-        onChange={(url) => setForm((prev) => ({ ...prev, coverImage: url }))}
-        onPreviewChange={setPreviewImage}
-      />
+      <div className="space-y-2">
+        <ImageUpload
+          label="Cover Image"
+          value={form.coverImage}
+          onChange={(url) => {
+            setForm((prev) => ({ ...prev, coverImage: url }));
+            if (errors.coverImage) {
+              setErrors((prev) => ({ ...prev, coverImage: "" }));
+            }
+          }}
+          onPreviewChange={setPreviewImage}
+        />
+        {touched.coverImage && errors.coverImage && (
+          <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            {errors.coverImage}
+          </p>
+        )}
+      </div>
 
       <FormInput
         label="Project URL (Opsional)"
@@ -212,8 +348,11 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         placeholder="https://your-project.com"
         value={form.url}
         onChange={handleChange}
+        onBlur={() => handleBlur("url")}
         icon={icons.url}
         iconColor="orange-500"
+        error={touched.url ? errors.url : ""}
+        helpText="Link ke demo langsung atau repository proyek"
       />
     </FormLayout>
   );

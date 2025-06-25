@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, createContext, useContext } from "react";
+import SidebarStats from "./SidebarStats";
 
 // Create context for sidebar state
 const SidebarContext = createContext<{
@@ -111,7 +112,6 @@ export default function AdminSidebar() {
           />
         </svg>
       ),
-      badge: null,
       gradient: "from-blue-500 to-blue-600",
     },
     {
@@ -132,7 +132,6 @@ export default function AdminSidebar() {
           />
         </svg>
       ),
-      badge: stats.projects,
       gradient: "from-emerald-500 to-emerald-600",
     },
     {
@@ -153,7 +152,6 @@ export default function AdminSidebar() {
           />
         </svg>
       ),
-      badge: stats.skills,
       gradient: "from-amber-500 to-orange-500",
     },
     {
@@ -174,7 +172,6 @@ export default function AdminSidebar() {
           />
         </svg>
       ),
-      badge: null,
       gradient: "from-purple-500 to-purple-600",
     },
     {
@@ -201,8 +198,54 @@ export default function AdminSidebar() {
           />
         </svg>
       ),
-      badge: null,
       gradient: "from-slate-500 to-slate-600",
+    },
+  ];
+
+  const sidebarStatsData = [
+    {
+      label: "Proyek",
+      value: stats.projects,
+      icon: (
+        <svg
+          className="w-3 h-3 text-white"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-.82-1.573l7-10A1 1 0 0111.12.38z" />
+        </svg>
+      ),
+      bgGradient: "from-blue-500 to-blue-600",
+      textColor: "text-blue-600 dark:text-blue-400",
+      lightBg: "from-blue-50 to-indigo-50",
+      darkBg: "from-blue-900/20 to-indigo-900/20",
+      borderColor: "border-blue-100 dark:border-blue-800/30",
+      hoverBorderColor: "border-blue-300 dark:border-blue-600/50",
+      shadowColor: "shadow-blue-500/25",
+    },
+    {
+      label: "Skills",
+      value: stats.skills,
+      icon: (
+        <svg
+          className="w-3 h-3 text-white"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fillRule="evenodd"
+            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+      bgGradient: "from-amber-500 to-orange-500",
+      textColor: "text-amber-600 dark:text-amber-400",
+      lightBg: "from-amber-50 to-orange-50",
+      darkBg: "from-amber-900/20 to-orange-900/20",
+      borderColor: "border-amber-100 dark:border-amber-800/30",
+      hoverBorderColor: "border-amber-300 dark:border-amber-600/50",
+      shadowColor: "shadow-amber-500/25",
     },
   ];
 
@@ -212,7 +255,7 @@ export default function AdminSidebar() {
       {!isMobileOpen && (
         <button
           onClick={() => setIsMobileOpen(true)}
-          className="fixed top-4 left-4 z-40 lg:hidden p-3 bg-gradient-to-br from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 backdrop-blur-xl rounded-xl border border-white/20 shadow-lg shadow-blue-500/25 transition-transform duration-200 hover:scale-105"
+          className="fixed top-4 left-4 z-40 lg:hidden p-3 bg-gradient-to-br from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 backdrop-blur-xl rounded-xl border border-white/20 shadow-md shadow-blue-500/25 transition-transform duration-200 hover:scale-105"
         >
           <svg
             className="w-5 h-5 text-white"
@@ -388,24 +431,9 @@ export default function AdminSidebar() {
                 </div>
 
                 {!isCollapsed && (
-                  <>
-                    <span className="font-medium whitespace-nowrap flex-1">
-                      {item.name}
-                    </span>
-
-                    {/* Badge */}
-                    {item.badge !== null && (
-                      <div
-                        className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                          isActive
-                            ? "bg-white/20 text-white"
-                            : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"
-                        }`}
-                      >
-                        {stats.isLoading ? "..." : item.badge}
-                      </div>
-                    )}
-                  </>
+                  <span className="font-medium whitespace-nowrap flex-1">
+                    {item.name}
+                  </span>
                 )}
 
                 {/* Glow effect for active item */}
@@ -416,75 +444,13 @@ export default function AdminSidebar() {
             );
           })}
 
-          {/* Quick Stats - Enhanced Design */}
+          {/* Quick Stats using reusable component */}
           {!isCollapsed && (
-            <div className="pt-6 mt-6 border-t border-slate-200/50 dark:border-slate-700/50">
-              <div className="mb-4">
-                <h3 className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 12 12"
-                  >
-                    <path d="M6 0a6 6 0 100 12A6 6 0 006 0zM5 3.5A.5.5 0 015.5 3h1a.5.5 0 01.5.5v1a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-1zM5 6.5A.5.5 0 015.5 6h1a.5.5 0 01.5.5v2a.5.5 0 01-.5.5h-1a.5.5 0 01-.5-.5v-2z" />
-                  </svg>
-                  Quick Stats
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                {/* Enhanced Stats Cards */}
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl blur opacity-0 group-hover:opacity-100"></div>
-                  <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-3 border border-blue-100 dark:border-blue-800/30 hover:border-blue-300 dark:hover:border-blue-600/50 group-hover:scale-105">
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-2 shadow-lg group-hover:shadow-blue-500/25">
-                        <svg
-                          className="w-3 h-3 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                        </svg>
-                      </div>
-                      <p className="text-xs text-blue-600 dark:text-blue-400 font-semibold mb-1">
-                        Proyek
-                      </p>
-                      <p className="text-lg font-bold text-blue-700 dark:text-blue-300">
-                        {stats.isLoading ? "..." : stats.projects}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl blur opacity-0 group-hover:opacity-100"></div>
-                  <div className="relative bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl p-3 border border-amber-100 dark:border-amber-800/30 hover:border-amber-300 dark:hover:border-amber-600/50 group-hover:scale-105">
-                    <div className="flex flex-col items-center text-center">
-                      <div className="w-6 h-6 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center mb-2 shadow-lg group-hover:shadow-amber-500/25">
-                        <svg
-                          className="w-3 h-3 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold mb-1">
-                        Skills
-                      </p>
-                      <p className="text-lg font-bold text-amber-700 dark:text-amber-300">
-                        {stats.isLoading ? "..." : stats.skills}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SidebarStats
+              stats={sidebarStatsData}
+              isLoading={stats.isLoading}
+              title="Quick Stats"
+            />
           )}
         </nav>
       </div>
