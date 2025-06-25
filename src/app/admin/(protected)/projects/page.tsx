@@ -6,10 +6,12 @@ import ProjectCard from "@/components/shared/ProjectCard";
 import PageHeader from "@/components/shared/PageHeader";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import EmptyState from "@/components/shared/EmptyState";
+import Pagination from "@/components/shared/Pagination";
 
 export default function ProjectListPage() {
   const [projects, setProjects] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
     project: any | null;
@@ -18,6 +20,8 @@ export default function ProjectListPage() {
     project: null,
   });
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const itemsPerPage = 6;
 
   const fetchProjects = async () => {
     setIsLoading(true);
@@ -108,63 +112,102 @@ export default function ProjectListPage() {
     </svg>
   );
 
+  // Pagination calculations
+  const totalPages = Math.ceil(projects.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentProjects = projects.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Reset to first page when projects change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [projects.length]);
+
   if (isLoading) {
-    return <LoadingSkeleton variant="card" count={6} />;
+    return (
+      <div className="min-h-screen bg-white dark:bg-slate-900">
+        <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
+          <div className="max-w-7xl mx-auto">
+            <LoadingSkeleton variant="card" count={6} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pb-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <PageHeader
-          title="Daftar Proyek"
-          subtitle="Kelola dan pantau semua proyek Anda dengan mudah"
-          itemCount={projects.length}
-          itemLabel="proyek"
-          actionButton={{
-            label: "Tambah Proyek",
-            href: "/admin/projects/new",
-            icon: addIcon,
-          }}
-        />
-
-        {/* Projects Grid */}
-        {projects.length === 0 ? (
-          <EmptyState
-            title="Belum ada proyek"
-            description="Mulai perjalanan Anda dengan membuat proyek pertama yang menakjubkan"
+    <div className="min-h-screen bg-white dark:bg-slate-900">
+      <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section */}
+          <PageHeader
+            title="Daftar Proyek"
+            subtitle="Kelola dan pantau semua proyek Anda dengan mudah"
+            itemCount={projects.length}
+            itemLabel="proyek"
             actionButton={{
-              label: "Buat Proyek Pertama",
+              label: "Tambah Proyek",
               href: "/admin/projects/new",
+              icon: addIcon,
             }}
           />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-                onDelete={deleteProject}
-                formatDate={formatDate}
-                showActions={true}
-                variant="admin"
-              />
-            ))}
-          </div>
-        )}
-      </div>
 
-      {/* Delete Confirmation Modal */}
-      <DeleteConfirmationModal
-        isOpen={deleteModal.isOpen}
-        onClose={cancelDelete}
-        onConfirm={confirmDelete}
-        isDeleting={isDeleting}
-        title="Konfirmasi Hapus"
-        description="Apakah anda yakin ingin menghapus proyek ini?"
-        warningMessage="Semua data proyek termasuk gambar dan informasi lainnya akan hilang permanen."
-      />
+          {/* Projects Grid */}
+          {projects.length === 0 ? (
+            <EmptyState
+              title="Belum ada proyek"
+              description="Mulai perjalanan Anda dengan membuat proyek pertama yang menakjubkan"
+              actionButton={{
+                label: "Buat Proyek Pertama",
+                href: "/admin/projects/new",
+              }}
+            />
+          ) : (
+            <>
+              {/* Projects Grid - Updated to 4 columns */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12">
+                {currentProjects.map((project, index) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    index={startIndex + index}
+                    onDelete={deleteProject}
+                    formatDate={formatDate}
+                    showActions={true}
+                    variant="admin"
+                  />
+                ))}
+              </div>
+
+              {/* Pagination Component */}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={projects.length}
+                itemsPerPage={itemsPerPage}
+                onPageChange={handlePageChange}
+                itemLabel="proyek"
+              />
+            </>
+          )}
+        </div>
+
+        {/* Delete Confirmation Modal */}
+        <DeleteConfirmationModal
+          isOpen={deleteModal.isOpen}
+          onClose={cancelDelete}
+          onConfirm={confirmDelete}
+          isDeleting={isDeleting}
+          title="Konfirmasi Hapus"
+          description="Apakah anda yakin ingin menghapus proyek ini?"
+          warningMessage="Semua data proyek termasuk gambar dan informasi lainnya akan hilang permanen."
+        />
+      </div>
     </div>
   );
 }

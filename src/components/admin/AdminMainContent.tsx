@@ -16,20 +16,15 @@ export default function AdminMainContent({
 
   return (
     <div
-      className={`flex-1 min-h-screen transition-[margin] duration-500 ease-in-out ${
+      className={`flex-1 min-h-screen transition-[margin] duration-200 ${
         isCollapsed ? "lg:ml-16" : "lg:ml-64"
       }`}
-      style={{
-        transitionProperty: "margin-left",
-        transitionDuration: "500ms",
-        transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-      }}
     >
       {/* Header */}
       <AdminHeader session={session} />
 
-      {/* Page Content */}
-      <main className="pt-4">{children}</main>
+      {/* Main Content */}
+      <main className="flex-1">{children}</main>
     </div>
   );
 }

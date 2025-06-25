@@ -43,7 +43,7 @@ export default function DeleteConfirmationModal({
       ></div>
 
       {/* Modal */}
-      <div className="relative bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all duration-300">
+      <div className="relative bg-white dark:bg-slate-800/90 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-md mx-4 overflow-hidden transform transition-all duration-300">
         {/* Header */}
         <div className="relative bg-gradient-to-r from-red-600 to-red-700 p-6 text-white">
           <div className="absolute inset-0 bg-black/10"></div>
@@ -133,7 +133,7 @@ export default function DeleteConfirmationModal({
             <button
               onClick={onClose}
               disabled={isDeleting}
-              className="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 disabled:opacity-50"
+              className="flex-1 px-4 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors duration-200 disabled:opacity-50"
             >
               Batal
             </button>

@@ -14,9 +14,8 @@ export default function ProjectPreview({
   previewImage,
 }: ProjectPreviewProps) {
   return (
-    <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/40 dark:border-slate-700/40 overflow-hidden">
-      {/* Image Preview */}
-      <div className="h-32 relative overflow-hidden">
+    <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-md border border-white/40 dark:border-slate-700/40 overflow-hidden">
+      <div className="aspect-video relative overflow-hidden">
         {previewImage ? (
           <img
             src={previewImage}

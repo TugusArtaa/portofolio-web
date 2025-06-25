@@ -23,7 +23,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-500 ease-in-out rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 group"
+      className="relative p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700/50 group"
       title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       <div className="relative w-5 h-5">

@@ -64,6 +64,116 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, []);
 
+  const statsCards = [
+    {
+      title: "Total Proyek",
+      value: stats.projects,
+      change: stats.projects > 0 ? `${stats.projects} proyek` : "Belum ada",
+      trend: "neutral",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+          />
+        </svg>
+      ),
+      bgGradient: "from-blue-500 via-blue-600 to-blue-700",
+      textColor: "text-blue-600",
+      lightBg: "from-blue-50 to-blue-100",
+      darkBg: "from-blue-900/20 to-blue-800/30",
+      href: "/admin/projects",
+    },
+    {
+      title: "Skills Aktif",
+      value: stats.skills,
+      change: stats.skills > 0 ? `${stats.skills} skills` : "Belum ada",
+      trend: "neutral",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13 10V3L4 14h7v7l9-11h-7z"
+          />
+        </svg>
+      ),
+      bgGradient: "from-emerald-500 via-emerald-600 to-emerald-700",
+      textColor: "text-emerald-600",
+      lightBg: "from-emerald-50 to-emerald-100",
+      darkBg: "from-emerald-900/20 to-emerald-800/30",
+      href: "/admin/skills",
+    },
+    {
+      title: "Tech Stack",
+      value: stats.views,
+      change: stats.views > 0 ? `${stats.views} teknologi` : "Belum ada",
+      trend: "neutral",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+          />
+        </svg>
+      ),
+      bgGradient: "from-purple-500 via-purple-600 to-purple-700",
+      textColor: "text-purple-600",
+      lightBg: "from-purple-50 to-purple-100",
+      darkBg: "from-purple-900/20 to-purple-800/30",
+      href: "/admin/projects",
+    },
+    {
+      title: "Proyek Terbaru",
+      value: stats.recentProjects.length,
+      change:
+        stats.recentProjects.length > 0
+          ? `${stats.recentProjects.length} terbaru`
+          : "Belum ada",
+      trend: "neutral",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+      bgGradient: "from-amber-500 via-amber-600 to-amber-700",
+      textColor: "text-amber-600",
+      lightBg: "from-amber-50 to-amber-100",
+      darkBg: "from-amber-900/20 to-amber-800/30",
+      href: "/admin/projects",
+    },
+  ];
+
   const quickActions = [
     {
       title: "Tambah Proyek",
@@ -157,18 +267,35 @@ export default function DashboardPage() {
 
   if (stats.isLoading) {
     return (
-      <div className="px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse">
-            <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/4 mb-2"></div>
-            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-32 bg-slate-200 dark:bg-slate-700 rounded-xl"
-                ></div>
-              ))}
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="animate-pulse space-y-8">
+              {/* Header skeleton */}
+              <div className="space-y-3">
+                <div className="h-10 bg-white/60 dark:bg-slate-700/60 rounded-2xl w-1/3"></div>
+                <div className="h-6 bg-white/40 dark:bg-slate-700/40 rounded-xl w-1/2"></div>
+              </div>
+
+              {/* Stats cards skeleton */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-40 bg-white/60 dark:bg-slate-700/60 rounded-3xl"
+                  ></div>
+                ))}
+              </div>
+
+              {/* Quick actions skeleton */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-32 bg-white/60 dark:bg-slate-700/60 rounded-2xl"
+                  ></div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -177,248 +304,109 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 pb-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-2">
-            Selamat Datang di Dashboard! 👋
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            Kelola portfolio Anda dengan mudah. Terakhir diperbarui:{" "}
-            {stats.lastUpdated}
-          </p>
-        </div>
+    <div className="min-h-screen bg-white dark:bg-slate-900">
+      <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Enhanced Welcome Section*/}
+          <div className="relative bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-slate-700/50 shadow-md p-6 sm:p-8 lg:p-10 mb-8 overflow-hidden">
+            {/* Background decoration - matching PageHeader */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-purple-400/20 to-pink-400/20 rounded-full blur-3xl translate-y-24 -translate-x-24"></div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {/* Projects Stats */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 border border-blue-100 dark:border-blue-800/30">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
+            <div className="relative flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+              <div className="space-y-2">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 dark:from-white dark:via-blue-200 dark:to-indigo-200 bg-clip-text text-transparent leading-tight">
+                  Selamat Datang Kembali!
+                </h1>
+                <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg lg:text-xl font-medium">
+                  Kelola portfolio Anda dengan mudah dan efisien
+                </p>
+                <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-500">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span>Terakhir diperbarui: {stats.lastUpdated}</span>
+                </div>
               </div>
-              <Link
-                href="/admin/projects"
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Link>
-            </div>
-            <div>
-              <p className="text-2xl lg:text-3xl font-bold text-blue-700 dark:text-blue-300 mb-1">
-                {stats.projects}
-              </p>
-              <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                Total Proyek
-              </p>
-            </div>
-          </div>
-
-          {/* Skills Stats */}
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 rounded-2xl p-6 border border-emerald-100 dark:border-emerald-800/30">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                  />
-                </svg>
-              </div>
-              <Link
-                href="/admin/skills"
-                className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Link>
-            </div>
-            <div>
-              <p className="text-2xl lg:text-3xl font-bold text-emerald-700 dark:text-emerald-300 mb-1">
-                {stats.skills}
-              </p>
-              <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
-                Skills Aktif
-              </p>
-            </div>
-          </div>
-
-          {/* Tech Stack Stats - Updated from Views */}
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-900/20 dark:to-purple-900/20 rounded-2xl p-6 border border-violet-100 dark:border-violet-800/30">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-              </div>
-              <div className="text-violet-500 dark:text-violet-400">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div>
-              <p className="text-2xl lg:text-3xl font-bold text-violet-700 dark:text-violet-300 mb-1">
-                {stats.views}
-              </p>
-              <p className="text-sm text-violet-600 dark:text-violet-400 font-medium">
-                Tech Stack
-              </p>
-            </div>
-          </div>
-
-          {/* Performance */}
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-6 border border-amber-100 dark:border-amber-800/30">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
-              </div>
-              <div className="text-amber-500 dark:text-amber-400">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 3l14 9-14 9V3z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div>
-              <p className="text-2xl lg:text-3xl font-bold text-amber-700 dark:text-amber-300 mb-1">
-                {Math.floor(Math.random() * 40) + 60}%
-              </p>
-              <p className="text-sm text-amber-600 dark:text-amber-400 font-medium">
-                Performance
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
-            Aksi Cepat
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action) => (
-              <Link
-                key={action.title}
-                href={action.href}
-                className="group bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 hover:shadow-lg"
-              >
-                <div className="flex items-center gap-4 mb-3">
-                  <div
-                    className={`w-10 h-10 bg-gradient-to-br ${action.gradient} rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-200`}
+              <div className="hidden lg:block">
+                <div className="w-32 h-32 bg-slate-100/50 dark:bg-slate-700/50 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-slate-200/50 dark:border-slate-600/50">
+                  <svg
+                    className="w-16 h-16 text-slate-600 dark:text-slate-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    {action.icon}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Enhanced Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {statsCards.map((card, index) => (
+              <Link key={card.title} href={card.href}>
+                <div
+                  className={`group relative overflow-hidden bg-gradient-to-br ${card.lightBg} dark:${card.darkBg} backdrop-blur-sm shadow-md rounded-3xl p-6 border dark:border-slate-700/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-200 hover:-translate-y-2 cursor-pointer`}
+                >
+                  {/* Background decoration */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-10 translate-x-10"></div>
+
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <div
+                        className={`w-14 h-14 bg-gradient-to-br ${card.bgGradient} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}
+                      >
+                        {card.icon}
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                          {card.change}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <p
+                        className={`text-3xl lg:text-4xl font-bold ${card.textColor} dark:text-white`}
+                      >
+                        {card.value}
+                      </p>
+                      <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                        {card.title}
+                      </p>
+                    </div>
+
+                    {/* Progress bar - only show if there's data */}
+                    {card.value > 0 && (
+                      <div className="mt-4 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full bg-gradient-to-r ${card.bgGradient} rounded-full transition-all duration-1000 ease-out`}
+                          style={{
+                            width: `${Math.min(100, (card.value / 10) * 100)}%`,
+                          }}
+                        ></div>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {action.title}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  {action.description}
-                </p>
               </Link>
             ))}
           </div>
-        </div>
 
-        {/* Recent Projects */}
-        {stats.recentProjects.length > 0 && (
-          <div>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                Proyek Terbaru
+          {/* Enhanced Quick Actions */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                Aksi Cepat
               </h2>
-              <Link
-                href="/admin/projects"
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium flex items-center gap-1"
-              >
-                Lihat Semua
+              <div className="flex items-center space-x-2 text-slate-500 dark:text-slate-400">
                 <svg
-                  className="w-4 h-4"
+                  className="w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -427,63 +415,56 @@ export default function DashboardPage() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M9 5l7 7-7 7"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
-              </Link>
+                <span className="text-sm font-medium">Produktivitas</span>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {stats.recentProjects.map((project) => (
-                <div
-                  key={project.id}
-                  className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-200"
-                >
-                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1">
-                      {project.techStack?.slice(0, 2).map((tech: string) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full"
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {quickActions.map((action, index) => (
+                <Link key={action.title} href={action.href}>
+                  <div className="group relative overflow-hidden shadow-md bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1">
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-blue-50/50 dark:to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-4">
+                        <div
+                          className={`w-12 h-12 bg-gradient-to-br ${action.gradient} rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-transform duration-200`}
                         >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.techStack?.length > 2 && (
-                        <span className="px-2 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-full">
-                          +{project.techStack.length - 2}
-                        </span>
-                      )}
+                          {action.icon}
+                        </div>
+                        <div className="w-8 h-8 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30">
+                          <svg
+                            className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+
+                      <h3 className="font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                        {action.title}
+                      </h3>
+                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {action.description}
+                      </p>
                     </div>
-                    <Link
-                      href={`/admin/projects/edit/${project.id}`}
-                      className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                      </svg>
-                    </Link>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

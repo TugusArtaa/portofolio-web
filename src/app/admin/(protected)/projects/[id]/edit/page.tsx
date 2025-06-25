@@ -54,7 +54,7 @@ export default function EditProjectPage({
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-slate-700/40 overflow-hidden animate-pulse">
+          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-md border border-white/40 dark:border-slate-700/40 overflow-hidden animate-pulse">
             {/* Header Skeleton */}
             <div className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl p-8">
               <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded-lg w-48 mb-4"></div>
@@ -88,7 +88,7 @@ export default function EditProjectPage({
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-slate-700/40 overflow-hidden">
+          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-md border border-white/40 dark:border-slate-700/40 overflow-hidden">
             {/* Error Header */}
             <div className="relative bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl p-8 text-slate-900 dark:text-white overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-red-400/20 to-pink-400/20 rounded-full blur-3xl -translate-y-32 translate-x-32"></div>
@@ -133,7 +133,7 @@ export default function EditProjectPage({
               </p>
               <button
                 onClick={() => (window.location.href = "/admin/projects")}
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
               >
                 <svg
                   className="w-5 h-5 mr-2"

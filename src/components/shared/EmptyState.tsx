@@ -35,7 +35,7 @@ export default function EmptyState({
   );
 
   return (
-    <div className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 dark:border-slate-700/50 p-12 lg:p-20 text-center">
+    <div className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl rounded-3xl shadow-md border border-white/20 dark:border-slate-700/50 p-12 lg:p-20 text-center">
       <div className="w-24 h-24 lg:w-32 lg:h-32 mx-auto mb-8 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-3xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
         {icon || defaultIcon}
       </div>
@@ -48,7 +48,7 @@ export default function EmptyState({
       {actionButton && (
         <Link
           href={actionButton.href}
-          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
         >
           {actionButton.label}
         </Link>

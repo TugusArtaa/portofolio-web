@@ -28,13 +28,13 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   return (
     <div
-      className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-xl hover:shadow-2xl border border-white/40 dark:border-slate-700/40 hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-500 overflow-hidden transform hover:-translate-y-2 hover:scale-[1.03]"
+      className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-md hover:shadow-lg border border-white/40 dark:border-slate-700/40 hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-500 overflow-hidden transform hover:-translate-y-1 hover:scale-[1.0]"
       style={{
         animationDelay: `${index * 100}ms`,
       }}
     >
-      {/* Project Image with Overlay */}
-      <div className="relative h-48 overflow-hidden rounded-t-3xl">
+      {/* Project Image with Overlay - Updated to aspect-video */}
+      <div className="relative aspect-video overflow-hidden rounded-t-3xl">
         {project.coverImage ? (
           <>
             <img
