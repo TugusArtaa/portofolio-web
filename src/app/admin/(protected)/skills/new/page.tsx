@@ -1,10 +1,10 @@
 "use client";
 
-import ProjectForm from "../_form";
+import SkillForm from "../_form";
 import { useState, useEffect } from "react";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 
-export default function NewProjectPage() {
+export default function NewSkillPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,6 +17,6 @@ export default function NewProjectPage() {
   }
 
   return (
-    <ProjectForm onSuccess={() => (window.location.href = "/admin/projects")} />
+    <SkillForm onSuccess={() => (window.location.href = "/admin/skills")} />
   );
 }

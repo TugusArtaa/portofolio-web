@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import StatsCard from "@/components/shared/StatsCard";
 import QuickActionCard from "@/components/shared/QuickActionCard";
 import WelcomeSection from "@/components/shared/WelcomeSection";
+import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 
 interface DashboardStats {
   projects: number;
@@ -265,36 +266,12 @@ export default function DashboardPage() {
 
   if (stats.isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <div className="min-h-screen bg-white dark:bg-slate-900">
         <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
           <div className="max-w-7xl mx-auto">
-            <div className="animate-pulse space-y-8">
-              {/* Header skeleton */}
-              <div className="space-y-3">
-                <div className="h-10 bg-white/60 dark:bg-slate-700/60 rounded-2xl w-1/3"></div>
-                <div className="h-6 bg-white/40 dark:bg-slate-700/40 rounded-xl w-1/2"></div>
-              </div>
-
-              {/* Stats cards skeleton */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-40 bg-white/60 dark:bg-slate-700/60 rounded-3xl"
-                  ></div>
-                ))}
-              </div>
-
-              {/* Quick actions skeleton */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-32 bg-white/60 dark:bg-slate-700/60 rounded-2xl"
-                  ></div>
-                ))}
-              </div>
-            </div>
+            <LoadingSkeleton variant="header" />
+            <LoadingSkeleton variant="stats" count={4} />
+            <LoadingSkeleton variant="quickActions" count={4} />
           </div>
         </div>
       </div>

@@ -212,7 +212,12 @@ export default function AdminSidebar() {
           fill="currentColor"
           viewBox="0 0 20 20"
         >
-          <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-.82-1.573l7-10A1 1 0 0111.12.38z" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 7V6a2 2 0 012-2h3.172a2 2 0 011.414.586l1.828 1.828A2 2 0 0012.828 7H19a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"
+          />
         </svg>
       ),
       bgGradient: "from-blue-500 to-blue-600",

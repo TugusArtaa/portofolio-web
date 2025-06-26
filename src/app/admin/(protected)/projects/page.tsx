@@ -170,7 +170,9 @@ export default function ProjectListPage() {
       <div className="min-h-screen bg-white dark:bg-slate-900">
         <div className="px-4 sm:px-6 lg:px-8 pt-8 pb-8">
           <div className="max-w-7xl mx-auto">
-            <LoadingSkeleton variant="card" count={6} />
+            <LoadingSkeleton variant="header" />
+            <LoadingSkeleton variant="card" count={itemsPerPage} />
+            <LoadingSkeleton variant="pagination" />
           </div>
         </div>
       </div>

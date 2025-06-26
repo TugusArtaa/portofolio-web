@@ -23,7 +23,7 @@ export default function Pagination({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-slate-700/50 p-6 mb-8">
+    <div className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-xl rounded-2xl shadow-md border border-white/20 dark:border-slate-700/50 p-6 mb-8">
       {/* Mobile Pagination */}
       <div className="flex md:hidden items-center justify-between">
         <button

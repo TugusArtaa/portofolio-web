@@ -10,6 +10,19 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const skill = await prisma.skill.create({ data: body });
+  const { name, level, icon } = body;
+  if (!name) {
+    return NextResponse.json(
+      { message: "Field 'name' wajib diisi" },
+      { status: 400 }
+    );
+  }
+  const skill = await prisma.skill.create({
+    data: {
+      name,
+      level: level ?? null,
+      icon: icon ?? null,
+    },
+  });
   return NextResponse.json(skill, { status: 201 });
 }
