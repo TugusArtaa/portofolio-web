@@ -1,0 +1,26 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import AboutForm from "../_form";
+
+export default function AboutNewPage() {
+  const [usedIds, setUsedIds] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/about")
+      .then((res) => res.json())
+      .then((data) => setUsedIds(data.map((item: any) => item.id)))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  if (isLoading) return null;
+
+  return (
+    <AboutForm
+      usedIds={usedIds}
+      onSuccess={() => (window.location.href = "/admin/about")}
+      onCancel={() => (window.location.href = "/admin/about")}
+    />
+  );
+}
