@@ -136,7 +136,7 @@ export default function AdminSidebar() {
     },
     {
       name: "Tools",
-      href: "/admin/tool",
+      href: "/admin/tools",
       icon: (
         <svg
           className="w-5 h-5"

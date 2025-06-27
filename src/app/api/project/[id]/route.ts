@@ -16,6 +16,18 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const data = await req.json();
+
+  // Validasi field wajib
+  if (!data.title || !data.slug || !data.description || !data.coverImage) {
+    return NextResponse.json(
+      {
+        message:
+          "Field 'title', 'slug', 'description', dan 'coverImage' wajib diisi",
+      },
+      { status: 400 }
+    );
+  }
+
   const updated = await prisma.project.update({
     where: { id: params.id },
     data: {

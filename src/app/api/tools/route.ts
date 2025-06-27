@@ -2,10 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const skills = await prisma.skill.findMany({
+  const tools = await prisma.tool.findMany({
     orderBy: { createdAt: "desc" },
   });
-  return NextResponse.json(skills);
+  return NextResponse.json(tools);
 }
 
 export async function POST(req: Request) {
@@ -17,13 +17,13 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
-  const skill = await prisma.skill.create({
+  const tool = await prisma.tool.create({
     data: {
       id,
       name,
-      level: level ?? null,
-      icon: icon ?? null,
+      level,
+      icon,
     },
   });
-  return NextResponse.json(skill, { status: 201 });
+  return NextResponse.json(tool, { status: 201 });
 }

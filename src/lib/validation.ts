@@ -95,7 +95,6 @@ export const projectValidationRules: Record<string, ValidationRule> = {
     maxLength: 1000,
   },
   techStack: {
-    required: true,
     custom: (value: string) => {
       const techs = value
         .split(",")

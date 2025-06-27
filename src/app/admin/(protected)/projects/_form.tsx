@@ -102,16 +102,27 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
       const method = existing ? "PUT" : "POST";
       const url = existing ? `/api/project/${existing.id}` : "/api/project";
 
+      // Generate payload dengan id jika tambah baru
+      const payload = {
+        ...form,
+        techStack: form.techStack
+          .split(",")
+          .map((tech) => tech.trim())
+          .filter(Boolean),
+        id: existing
+          ? existing.id
+          : form.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "") +
+            "-" +
+            Math.random().toString(36).slice(2, 8),
+      };
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          techStack: form.techStack
-            .split(",")
-            .map((tech) => tech.trim())
-            .filter(Boolean),
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -304,7 +315,6 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
         onBlur={() => handleBlur("techStack")}
         icon={icons.techStack}
         iconColor="emerald-500"
-        required
         error={touched.techStack ? errors.techStack : ""}
         helpText="Pisahkan dengan koma. Contoh: React, Node.js, MongoDB"
       />

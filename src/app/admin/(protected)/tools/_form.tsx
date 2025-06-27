@@ -4,46 +4,27 @@ import { useState, useEffect } from "react";
 import FormLayout from "@/components/shared/FormLayout";
 import FormInput from "@/components/shared/FormInput";
 import ImageUpload from "@/components/shared/ImageUpload";
-import SkillPreview from "@/components/shared/SkillPreview";
+import ToolsPreview from "@/components/shared/ToolsPreview";
 import { useToast } from "@/components/ui/toast";
 
-interface SkillFormProps {
+interface ToolsFormProps {
   existing?: any;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
 const LEVEL_OPTIONS = [
-  {
-    label: "Beginner",
-    value: "Beginner",
-    color:
-      "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
-  },
-  {
-    label: "Intermediate",
-    value: "Intermediate",
-    color:
-      "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300",
-  },
-  {
-    label: "Advanced",
-    value: "Advanced",
-    color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-  },
-  {
-    label: "Expert",
-    value: "Expert",
-    color:
-      "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
-  },
+  { label: "Beginner", value: "Beginner" },
+  { label: "Intermediate", value: "Intermediate" },
+  { label: "Advanced", value: "Advanced" },
+  { label: "Expert", value: "Expert" },
 ];
 
-export default function SkillForm({
+export default function ToolsForm({
   existing,
   onSuccess,
   onCancel,
-}: SkillFormProps) {
+}: ToolsFormProps) {
   const [form, setForm] = useState({
     name: "",
     level: "",
@@ -68,30 +49,15 @@ export default function SkillForm({
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!form.name.trim()) newErrors.name = "Nama skill wajib diisi";
+    if (!form.name.trim()) newErrors.name = "Nama tool wajib diisi";
     if (form.name.length > 50)
-      newErrors.name = "Nama skill maksimal 50 karakter";
-    if (!form.level.trim()) newErrors.level = "Level skill wajib diisi";
-    if (form.icon && !isValidIcon(form.icon)) {
-      newErrors.icon = "Icon harus berupa URL gambar valid atau file upload";
-    }
+      newErrors.name = "Nama tool maksimal 50 karakter";
+    if (!form.level.trim()) newErrors.level = "Level tool wajib diisi";
     if (form.icon && form.icon.length > 255) {
       newErrors.icon = "URL icon maksimal 255 karakter";
     }
     return newErrors;
   };
-
-  function isValidIcon(value: string) {
-    if (
-      value.startsWith("/uploads/") ||
-      value.startsWith("http://") ||
-      value.startsWith("https://") ||
-      value.startsWith("data:image/")
-    ) {
-      return true;
-    }
-    return false;
-  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -138,7 +104,8 @@ export default function SkillForm({
 
     setIsSubmitting(true);
     try {
-      // Tambahkan payload sesuai permintaan
+      const method = existing ? "PUT" : "POST";
+      const url = existing ? `/api/tools/${existing.id}` : "/api/tools";
       const payload = {
         ...form,
         id: existing
@@ -147,8 +114,6 @@ export default function SkillForm({
             "-" +
             Math.random().toString(36).slice(2, 8),
       };
-      const method = existing ? "PUT" : "POST";
-      const url = existing ? `/api/skills/${existing.id}` : "/api/skills";
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -158,10 +123,10 @@ export default function SkillForm({
       if (response.ok) {
         addToast({
           type: "success",
-          title: existing ? "Skill Diperbarui" : "Skill Ditambahkan",
+          title: existing ? "Tool Diperbarui" : "Tool Ditambahkan",
           message: existing
-            ? "Skill berhasil diperbarui."
-            : "Skill baru berhasil ditambahkan.",
+            ? "Tool berhasil diperbarui."
+            : "Tool baru berhasil ditambahkan.",
         });
         if (onSuccess) onSuccess();
       } else {
@@ -171,7 +136,7 @@ export default function SkillForm({
       addToast({
         type: "error",
         title: "Gagal Menyimpan",
-        message: "Terjadi kesalahan saat menyimpan skill.",
+        message: "Terjadi kesalahan saat menyimpan tool.",
       });
     } finally {
       setIsSubmitting(false);
@@ -180,28 +145,27 @@ export default function SkillForm({
 
   return (
     <FormLayout
-      title={existing ? "Edit Skill" : "Tambah Skill"}
+      title={existing ? "Edit Tool" : "Tambah Tool"}
       subtitle={
-        existing ? "Edit detail skill Anda" : "Tambah skill baru ke daftar"
+        existing ? "Edit detail tool Anda" : "Tambah tool baru ke daftar"
       }
-      onCancel={() => window.history.back()}
+      onCancel={onCancel}
       onSubmit={handleSubmit}
-      submitLabel={existing ? "Update Skill" : "Simpan Skill"}
+      submitLabel={existing ? "Update Tool" : "Simpan Tool"}
       isSubmitting={isSubmitting}
       preview={
-        <SkillPreview name={form.name} level={form.level} icon={iconPreview} />
+        <ToolsPreview name={form.name} level={form.level} icon={iconPreview} />
       }
     >
       <FormInput
-        label="Nama Skill"
+        label="Nama Tool"
         name="name"
-        placeholder="Contoh: React, Node.js"
+        placeholder="Contoh: VSCode, Figma"
         value={form.name}
         onChange={handleChange}
         onBlur={() => handleBlur("name")}
         required
         error={touched.name ? errors.name : ""}
-        iconColor="blue-500"
       />
 
       {/* Level Picker */}
@@ -217,7 +181,7 @@ export default function SkillForm({
               className={`px-4 py-2 rounded-xl font-semibold border transition-all duration-200 focus:outline-none
                 ${
                   form.level === opt.value
-                    ? `${opt.color} border-blue-500 ring-2 ring-blue-200 dark:ring-blue-700`
+                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 border-blue-500 ring-2 ring-blue-200 dark:ring-blue-700"
                     : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/30"
                 }
               `}
@@ -250,7 +214,7 @@ export default function SkillForm({
       {/* Icon Upload */}
       <div className="space-y-2">
         <ImageUpload
-          label="Icon Skill (1:1, opsional)"
+          label="Icon Tool (1:1, opsional)"
           value={form.icon}
           onChange={handleIconChange}
           onPreviewChange={setIconPreview}
