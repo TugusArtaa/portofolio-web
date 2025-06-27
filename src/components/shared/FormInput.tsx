@@ -5,7 +5,7 @@ import React from "react";
 interface FormInputProps {
   label: string;
   name: string;
-  type?: "text" | "email" | "password" | "url" | "textarea";
+  type?: "text" | "email" | "password" | "url" | "textarea" | "date"; // tambahkan "date"
   placeholder: string;
   value: string;
   onChange: (

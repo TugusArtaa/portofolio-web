@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, createContext, useContext } from "react";
-import SidebarStats from "./SidebarStats";
 
 // Create context for sidebar state
 const SidebarContext = createContext<{
@@ -30,45 +29,6 @@ export default function AdminSidebar() {
   const pathname = usePathname();
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [stats, setStats] = useState({
-    projects: 0,
-    skills: 0,
-    totalTechStack: 0,
-    isLoading: true,
-  });
-
-  // Fetch dashboard stats
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const [projectsRes, skillsRes] = await Promise.all([
-          fetch("/api/project"),
-          fetch("/api/skills"),
-        ]);
-
-        const projects = await projectsRes.json();
-        const skills = await skillsRes.json();
-
-        // Calculate total unique tech stack from all projects
-        const allTechStacks = projects.flatMap(
-          (project: any) => project.techStack || []
-        );
-        const uniqueTechStacks = [...new Set(allTechStacks)];
-
-        setStats({
-          projects: projects.length || 0,
-          skills: skills.length || 0,
-          totalTechStack: uniqueTechStacks.length || 0,
-          isLoading: false,
-        });
-      } catch (error) {
-        console.error("Error fetching stats:", error);
-        setStats((prev) => ({ ...prev, isLoading: false }));
-      }
-    };
-
-    fetchStats();
-  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -135,6 +95,26 @@ export default function AdminSidebar() {
       gradient: "from-emerald-500 to-emerald-600",
     },
     {
+      name: "Sertifikat",
+      href: "/admin/sertifikat",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+          />
+        </svg>
+      ),
+      gradient: "from-teal-500 to-cyan-600",
+    },
+    {
       name: "Skills",
       href: "/admin/skills",
       icon: (
@@ -153,6 +133,32 @@ export default function AdminSidebar() {
         </svg>
       ),
       gradient: "from-amber-500 to-orange-500",
+    },
+    {
+      name: "Tools",
+      href: "/admin/tool",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M14.7 6.3a1 1 0 011.4 0l1.6 1.6a1 1 0 010 1.4l-8.6 8.6a1 1 0 01-1.4 0l-1.6-1.6a1 1 0 010-1.4l8.6-8.6z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M7 17l-3 3"
+          />
+        </svg>
+      ),
+      gradient: "from-indigo-500 to-blue-500",
     },
     {
       name: "Tentang Saya",
@@ -199,58 +205,6 @@ export default function AdminSidebar() {
         </svg>
       ),
       gradient: "from-slate-500 to-slate-600",
-    },
-  ];
-
-  const sidebarStatsData = [
-    {
-      label: "Proyek",
-      value: stats.projects,
-      icon: (
-        <svg
-          className="w-3 h-3 text-white"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 7V6a2 2 0 012-2h3.172a2 2 0 011.414.586l1.828 1.828A2 2 0 0012.828 7H19a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"
-          />
-        </svg>
-      ),
-      bgGradient: "from-blue-500 to-blue-600",
-      textColor: "text-blue-600 dark:text-blue-400",
-      lightBg: "from-blue-50 to-indigo-50",
-      darkBg: "from-blue-900/20 to-indigo-900/20",
-      borderColor: "border-blue-100 dark:border-blue-800/30",
-      hoverBorderColor: "border-blue-300 dark:border-blue-600/50",
-      shadowColor: "shadow-blue-500/25",
-    },
-    {
-      label: "Skills",
-      value: stats.skills,
-      icon: (
-        <svg
-          className="w-3 h-3 text-white"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            fillRule="evenodd"
-            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
-      bgGradient: "from-amber-500 to-orange-500",
-      textColor: "text-amber-600 dark:text-amber-400",
-      lightBg: "from-amber-50 to-orange-50",
-      darkBg: "from-amber-900/20 to-orange-900/20",
-      borderColor: "border-amber-100 dark:border-amber-800/30",
-      hoverBorderColor: "border-amber-300 dark:border-amber-600/50",
-      shadowColor: "shadow-amber-500/25",
     },
   ];
 
@@ -448,15 +402,6 @@ export default function AdminSidebar() {
               </Link>
             );
           })}
-
-          {/* Quick Stats using reusable component */}
-          {!isCollapsed && (
-            <SidebarStats
-              stats={sidebarStatsData}
-              isLoading={stats.isLoading}
-              title="Quick Stats"
-            />
-          )}
         </nav>
       </div>
     </>
