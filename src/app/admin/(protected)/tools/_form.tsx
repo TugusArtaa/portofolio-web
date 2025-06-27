@@ -53,6 +53,7 @@ export default function ToolsForm({
     if (form.name.length > 50)
       newErrors.name = "Nama tool maksimal 50 karakter";
     if (!form.level.trim()) newErrors.level = "Level tool wajib diisi";
+    if (!form.icon.trim()) newErrors.icon = "Icon tool wajib diisi";
     if (form.icon && form.icon.length > 255) {
       newErrors.icon = "URL icon maksimal 255 karakter";
     }
@@ -214,7 +215,7 @@ export default function ToolsForm({
       {/* Icon Upload */}
       <div className="space-y-2">
         <ImageUpload
-          label="Icon Tool (1:1, opsional)"
+          label="Icon Tool"
           value={form.icon}
           onChange={handleIconChange}
           onPreviewChange={setIconPreview}

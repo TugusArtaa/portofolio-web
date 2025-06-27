@@ -23,7 +23,6 @@ export default function DeleteConfirmationModal({
   isDeleting,
   title,
   description = "Anda yakin ingin menghapus item ini?",
-  itemPreview,
   warningMessage = "Semua data akan hilang permanen dan tidak dapat dikembalikan.",
 }: DeleteConfirmationModalProps) {
   if (!isOpen) return null;

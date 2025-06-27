@@ -7,6 +7,7 @@ interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   onPreviewChange: (url: string) => void;
+  error?: string;
 }
 
 export default function ImageUpload({
@@ -14,6 +15,7 @@ export default function ImageUpload({
   value,
   onChange,
   onPreviewChange,
+  error,
 }: ImageUploadProps) {
   const [uploadMethod, setUploadMethod] = useState<"upload" | "url">("upload");
   const [isUploading, setIsUploading] = useState(false);
@@ -80,7 +82,7 @@ export default function ImageUpload({
             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
           />
         </svg>
-        {label}
+        {label} <span className="text-red-500">*</span>
       </label>
 
       {/* Upload Method Toggle */}
@@ -168,7 +170,7 @@ export default function ImageUpload({
             </div>
           </label>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Supports JPG, PNG, GIF up to 5MB
+            Supports JPG, PNG, JPEG up to 5MB
           </p>
         </div>
       ) : (
@@ -179,6 +181,25 @@ export default function ImageUpload({
           onChange={handleUrlChange}
           className="w-full px-4 py-3 bg-white/80 dark:bg-slate-700/80 backdrop-blur-sm border border-slate-300/50 dark:border-slate-600/50 rounded-xl focus:border-pink-500 dark:focus:border-pink-400 focus:ring-2 focus:ring-pink-500/20 transition-all duration-200 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400"
         />
+      )}
+      {/* Tampilkan pesan error jika ada */}
+      {error && (
+        <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          {error}
+        </p>
       )}
     </div>
   );

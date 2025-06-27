@@ -243,7 +243,7 @@ export default function ProjectListPage() {
           onConfirm={confirmDelete}
           isDeleting={isDeleting}
           title="Konfirmasi Hapus"
-          description={`Apakah anda yakin ingin menghapus proyek "${deleteModal.project?.title}"?`}
+          description={`Apakah yakin ingin menghapus proyek "${deleteModal.project?.title}"?`}
           warningMessage="Semua data proyek termasuk gambar dan informasi lainnya akan hilang permanen dan tidak dapat dikembalikan."
         />
       </div>

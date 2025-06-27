@@ -49,6 +49,7 @@ export default function SertifikatForm({
     if (!form.title.trim()) newErrors.title = "Judul wajib diisi";
     if (!form.issuer.trim()) newErrors.issuer = "Penerbit wajib diisi";
     if (!form.issueDate) newErrors.issueDate = "Tanggal terbit wajib diisi";
+    if (!form.image) newErrors.image = "Gambar sertifikat wajib diisi";
     return newErrors;
   };
 
@@ -98,7 +99,14 @@ export default function SertifikatForm({
         : "/api/sertifikat";
       const payload = {
         ...form,
-        id: existing ? existing.id : form.id || crypto.randomUUID(),
+        id: existing
+          ? existing.id
+          : form.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "") +
+            "-" +
+            Math.random().toString(36).slice(2, 8),
         issueDate: form.issueDate,
         expireDate: form.expireDate || null,
         image: form.image || null,
@@ -194,10 +202,11 @@ export default function SertifikatForm({
         error={touched.expireDate ? errors.expireDate : ""}
       />
       <ImageUpload
-        label="Gambar Sertifikat (Opsional)"
+        label="Gambar Sertifikat"
         value={form.image}
         onChange={handleImageChange}
-        onPreviewChange={() => {}} // tambahkan ini agar tidak error typescript
+        onPreviewChange={() => {}}
+        error={touched.image ? errors.image : ""}
       />
     </FormLayout>
   );

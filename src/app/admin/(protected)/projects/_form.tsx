@@ -307,7 +307,7 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
       />
 
       <FormInput
-        label="Tech Stack"
+        label="Tech Stack (Opsional)"
         name="techStack"
         placeholder="React, Next.js, TypeScript, Tailwind CSS"
         value={form.techStack}

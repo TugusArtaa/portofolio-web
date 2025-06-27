@@ -72,6 +72,7 @@ export default function SkillForm({
     if (form.name.length > 50)
       newErrors.name = "Nama skill maksimal 50 karakter";
     if (!form.level.trim()) newErrors.level = "Level skill wajib diisi";
+    if (!form.icon.trim()) newErrors.icon = "Icon skill wajib diisi";
     if (form.icon && !isValidIcon(form.icon)) {
       newErrors.icon = "Icon harus berupa URL gambar valid atau file upload";
     }
@@ -143,7 +144,10 @@ export default function SkillForm({
         ...form,
         id: existing
           ? existing.id
-          : form.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") +
+          : form.name
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, "-")
+              .replace(/(^-|-$)/g, "") +
             "-" +
             Math.random().toString(36).slice(2, 8),
       };
@@ -250,7 +254,7 @@ export default function SkillForm({
       {/* Icon Upload */}
       <div className="space-y-2">
         <ImageUpload
-          label="Icon Skill (1:1, opsional)"
+          label="Icon Skill"
           value={form.icon}
           onChange={handleIconChange}
           onPreviewChange={setIconPreview}
