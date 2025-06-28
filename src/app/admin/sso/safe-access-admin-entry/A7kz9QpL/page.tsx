@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/context/ThemeContext";
-import LoadingOverlay from "@/components/ui/loading-overlay";
 import { validateLoginForm } from "@/lib/validation";
 
 export default function LoginPage() {
@@ -16,7 +15,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
-  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
 
@@ -46,7 +44,7 @@ export default function LoginPage() {
 
       if (res?.ok) {
         setIsLoading(false);
-        setShowSuccessAnimation(true);
+        router.push("/admin/dashboard");
       } else {
         setError("Email atau password salah. Silakan coba lagi.");
         setIsLoading(false);
@@ -60,14 +58,9 @@ export default function LoginPage() {
 
   const handleGithubLogin = () => {
     setIsLoading(true);
-    setShowSuccessAnimation(true); // Show animation for GitHub login too
     setTimeout(() => {
       signIn("github", { callbackUrl: "/admin/dashboard" });
     }, 100);
-  };
-
-  const handleAnimationComplete = () => {
-    router.push("/admin/dashboard");
   };
 
   if (!mounted) {
@@ -421,13 +414,6 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-
-      {/* Success Animation Overlay */}
-      <LoadingOverlay
-        isVisible={showSuccessAnimation}
-        type="login"
-        onComplete={handleAnimationComplete}
-      />
     </>
   );
 }

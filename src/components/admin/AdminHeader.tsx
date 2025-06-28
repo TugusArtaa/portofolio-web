@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 import UserMenu from "./UserMenu";
 import TimeDisplay from "./TimeDisplay";
-import LoadingOverlay from "@/components/ui/loading-overlay";
 import { useSidebar } from "./AdminSidebar";
 
 interface AdminHeaderProps {
@@ -16,7 +15,6 @@ interface AdminHeaderProps {
 
 export default function AdminHeader({ session }: AdminHeaderProps) {
   const { isCollapsed } = useSidebar();
-  const [showLogoutAnimation, setShowLogoutAnimation] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -175,10 +173,6 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
   const pageInfo = getPageInfo();
 
   const handleLogout = () => {
-    setShowLogoutAnimation(true);
-  };
-
-  const handleLogoutComplete = () => {
     signOut({ callbackUrl: "/" });
   };
 
@@ -249,13 +243,6 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
           </div>
         </div>
       </header>
-
-      {/* Logout Animation Overlay */}
-      <LoadingOverlay
-        isVisible={showLogoutAnimation}
-        type="logout"
-        onComplete={handleLogoutComplete}
-      />
     </>
   );
 }
