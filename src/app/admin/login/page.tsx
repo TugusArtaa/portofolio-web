@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/context/ThemeContext";
 import LoadingOverlay from "@/components/ui/loading-overlay";
+import { validateLoginForm } from "@/lib/validation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -26,6 +27,14 @@ export default function LoginPage() {
   const handleLocalLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    // Validasi sebelum submit
+    const validationError = validateLoginForm(email, password);
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -36,8 +45,8 @@ export default function LoginPage() {
       });
 
       if (res?.ok) {
-        setIsLoading(false); // Set loading to false first
-        setShowSuccessAnimation(true); // Then show animation
+        setIsLoading(false);
+        setShowSuccessAnimation(true);
       } else {
         setError("Email atau password salah. Silakan coba lagi.");
         setIsLoading(false);

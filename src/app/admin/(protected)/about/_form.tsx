@@ -6,6 +6,11 @@ import FormInput from "@/components/shared/FormInput";
 import AboutPreview from "@/components/shared/AboutPreview";
 import AboutIdPicker from "@/components/shared/AboutIdPicker";
 import { useToast } from "@/components/ui/toast";
+import {
+  validateForm,
+  validateField,
+  aboutValidationRules,
+} from "@/lib/validation";
 
 const ABOUT_IDS = [
   {
@@ -125,15 +130,6 @@ export default function AboutForm({
 
   const displayedIds = showAllIds ? availableIds : availableIds.slice(0, 6);
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!form.id) newErrors.id = "Bagian about wajib dipilih";
-    if (!form.content.trim()) newErrors.content = "Konten wajib diisi";
-    if (form.content.length > 1000)
-      newErrors.content = "Konten maksimal 1000 karakter";
-    return newErrors;
-  };
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -152,19 +148,33 @@ export default function AboutForm({
 
   const handleBlur = (field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
-    const fieldError = validate()[field];
-    if (fieldError) setErrors((prev) => ({ ...prev, [field]: fieldError }));
+    const fieldRules = aboutValidationRules[field];
+    if (fieldRules) {
+      const fieldError = validateField(
+        form[field as keyof typeof form],
+        fieldRules
+      );
+      setErrors((prev) => ({ ...prev, [field]: fieldError || "" }));
+    }
   };
 
   const handleSubmit = async () => {
-    const validation = validate();
-    setErrors(validation);
-    setTouched({ id: true, content: true });
-    if (Object.keys(validation).length > 0) {
+    // Mark all fields as touched
+    const allTouched = Object.keys(form).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
+    setTouched(allTouched);
+
+    // Validate entire form
+    const validation = validateForm(form, aboutValidationRules);
+    setErrors(validation.errors);
+
+    if (!validation.isValid) {
       addToast({
         type: "error",
         title: "Form Tidak Valid",
-        message: "Silakan lengkapi semua field yang wajib diisi.",
+        message: "Silakan perbaiki kesalahan pada form sebelum melanjutkan.",
       });
       return;
     }

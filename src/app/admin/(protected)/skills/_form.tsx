@@ -5,7 +5,13 @@ import FormLayout from "@/components/shared/FormLayout";
 import FormInput from "@/components/shared/FormInput";
 import ImageUpload from "@/components/shared/ImageUpload";
 import SkillPreview from "@/components/shared/SkillPreview";
+import LevelPicker from "@/components/shared/LevelPicker";
 import { useToast } from "@/components/ui/toast";
+import {
+  validateForm,
+  validateField,
+  skillValidationRules,
+} from "@/lib/validation";
 
 interface SkillFormProps {
   existing?: any;
@@ -66,34 +72,6 @@ export default function SkillForm({
     }
   }, [existing]);
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!form.name.trim()) newErrors.name = "Nama skill wajib diisi";
-    if (form.name.length > 50)
-      newErrors.name = "Nama skill maksimal 50 karakter";
-    if (!form.level.trim()) newErrors.level = "Level skill wajib diisi";
-    if (!form.icon.trim()) newErrors.icon = "Icon skill wajib diisi";
-    if (form.icon && !isValidIcon(form.icon)) {
-      newErrors.icon = "Icon harus berupa URL gambar valid atau file upload";
-    }
-    if (form.icon && form.icon.length > 255) {
-      newErrors.icon = "URL icon maksimal 255 karakter";
-    }
-    return newErrors;
-  };
-
-  function isValidIcon(value: string) {
-    if (
-      value.startsWith("/uploads/") ||
-      value.startsWith("http://") ||
-      value.startsWith("https://") ||
-      value.startsWith("data:image/")
-    ) {
-      return true;
-    }
-    return false;
-  }
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -104,8 +82,14 @@ export default function SkillForm({
 
   const handleBlur = (field: string) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
-    const fieldError = validate()[field];
-    if (fieldError) setErrors((prev) => ({ ...prev, [field]: fieldError }));
+    const fieldRules = skillValidationRules[field];
+    if (fieldRules) {
+      const fieldError = validateField(
+        form[field as keyof typeof form],
+        fieldRules
+      );
+      setErrors((prev) => ({ ...prev, [field]: fieldError || "" }));
+    }
   };
 
   const handleLevelSelect = (level: string) => {
@@ -121,18 +105,22 @@ export default function SkillForm({
   };
 
   const handleSubmit = async () => {
-    const validation = validate();
-    setErrors(validation);
-    setTouched({
-      name: true,
-      level: true,
-      icon: true,
-    });
-    if (Object.keys(validation).length > 0) {
+    // Mark all fields as touched
+    const allTouched = Object.keys(form).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
+    setTouched(allTouched);
+
+    // Validate entire form
+    const validation = validateForm(form, skillValidationRules);
+    setErrors(validation.errors);
+
+    if (!validation.isValid) {
       addToast({
         type: "error",
         title: "Form Tidak Valid",
-        message: "Silakan lengkapi semua field yang wajib diisi.",
+        message: "Silakan perbaiki kesalahan pada form sebelum melanjutkan.",
       });
       return;
     }
@@ -209,47 +197,14 @@ export default function SkillForm({
       />
 
       {/* Level Picker */}
-      <div className="space-y-2">
-        <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 block">
-          Level <span className="text-red-500">*</span>
-        </label>
-        <div className="flex gap-2 flex-wrap">
-          {LEVEL_OPTIONS.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              className={`px-4 py-2 rounded-xl font-semibold border transition-all duration-200 focus:outline-none
-                ${
-                  form.level === opt.value
-                    ? `${opt.color} border-blue-500 ring-2 ring-blue-200 dark:ring-blue-700`
-                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/30"
-                }
-              `}
-              onClick={() => handleLevelSelect(opt.value)}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-        {touched.level && errors.level && (
-          <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {errors.level}
-          </p>
-        )}
-      </div>
+      <LevelPicker
+        value={form.level}
+        options={LEVEL_OPTIONS}
+        onSelect={handleLevelSelect}
+        error={errors.level}
+        touched={touched.level}
+        required
+      />
 
       {/* Icon Upload */}
       <div className="space-y-2">
@@ -258,25 +213,8 @@ export default function SkillForm({
           value={form.icon}
           onChange={handleIconChange}
           onPreviewChange={setIconPreview}
+          error={touched.icon ? errors.icon : ""}
         />
-        {touched.icon && errors.icon && (
-          <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {errors.icon}
-          </p>
-        )}
       </div>
     </FormLayout>
   );

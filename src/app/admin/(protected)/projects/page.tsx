@@ -63,8 +63,8 @@ export default function ProjectListPage() {
         // Success toast
         addToast({
           type: "success",
-          title: "Proyek Berhasil Dihapus",
-          message: `"${projectTitle}" telah dihapus dari daftar proyek Anda.`,
+          title: "Proyek Dihapus",
+          message: `Proyek "${projectTitle}" berhasil dihapus.`,
           duration: 4000,
         });
 

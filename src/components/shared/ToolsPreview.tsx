@@ -113,7 +113,7 @@ export default function ToolsPreview({ name, level, icon }: ToolsPreviewProps) {
                 {/* Progress Bar */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
-                    <span>Tool Mastery</span>
+                    <span>Tool Level</span>
                     <span className="font-medium">{levelConfig.progress}%</span>
                   </div>
                   <div className="w-full bg-slate-200 dark:bg-slate-600 rounded-full h-2 overflow-hidden shadow-inner">

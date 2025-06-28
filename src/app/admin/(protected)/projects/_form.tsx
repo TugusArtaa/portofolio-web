@@ -6,7 +6,11 @@ import FormInput from "@/components/shared/FormInput";
 import ImageUpload from "@/components/shared/ImageUpload";
 import ProjectPreview from "@/components/shared/ProjectPreview";
 import { useToast } from "@/components/ui/toast";
-import { validateForm, projectValidationRules } from "@/lib/validation";
+import {
+  validateForm,
+  validateField,
+  projectValidationRules,
+} from "@/lib/validation";
 
 interface ProjectFormProps {
   existing?: any;
@@ -91,7 +95,7 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
       addToast({
         type: "error",
         title: "Form Tidak Valid",
-        message: "Silakan perbaiki kesalahan pada form sebelum melanjutkan",
+        message: "Silakan perbaiki kesalahan pada form sebelum melanjutkan.",
       });
       return;
     }
@@ -159,33 +163,6 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  // Helper function to validate field
-  const validateField = (value: string, rules: any): string | null => {
-    if (rules.required && (!value || value.trim() === "")) {
-      return "Field ini wajib diisi";
-    }
-
-    if (!value || value.trim() === "") return null;
-
-    if (rules.minLength && value.length < rules.minLength) {
-      return `Minimal ${rules.minLength} karakter`;
-    }
-
-    if (rules.maxLength && value.length > rules.maxLength) {
-      return `Maksimal ${rules.maxLength} karakter`;
-    }
-
-    if (rules.pattern && !rules.pattern.test(value)) {
-      return "Format tidak valid";
-    }
-
-    if (rules.custom) {
-      return rules.custom(value);
-    }
-
-    return null;
   };
 
   const icons = {
@@ -330,25 +307,8 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
             }
           }}
           onPreviewChange={setPreviewImage}
+          error={touched.coverImage ? errors.coverImage : ""}
         />
-        {touched.coverImage && errors.coverImage && (
-          <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            {errors.coverImage}
-          </p>
-        )}
       </div>
 
       <FormInput

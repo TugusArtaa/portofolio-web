@@ -8,7 +8,7 @@ import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
-import SkillsCard from "@/components/shared/SkillsCard";
+import ToolsCard from "@/components/shared/ToolsCard";
 
 export default function ToolsPage() {
   const [tools, setTools] = useState<any[]>([]);
@@ -173,9 +173,9 @@ export default function ToolsPage() {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-12">
                 {currentTools.map((tool, index) => (
-                  <SkillsCard
+                  <ToolsCard
                     key={tool.id}
-                    skill={tool}
+                    tool={tool}
                     index={startIndex + index}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
