@@ -49,13 +49,8 @@ export default function LoadingOverlay({
         setTimeout(() => {
           setStage("success");
 
-          // Redirect after success animation
+          // Hanya panggil onComplete, redirect dihandle parent
           setTimeout(() => {
-            if (type === "login") {
-              router.push("/admin/dashboard");
-            } else if (type === "logout") {
-              router.push("admin/login");
-            }
             onComplete?.();
           }, 1500);
         }, 300);

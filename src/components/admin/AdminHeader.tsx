@@ -1,14 +1,12 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "@/context/ThemeContext";
 import ThemeToggle from "./ThemeToggle";
 import UserMenu from "./UserMenu";
 import TimeDisplay from "./TimeDisplay";
-import NotificationButton from "./NotificationButton";
 import LoadingOverlay from "@/components/ui/loading-overlay";
 import { useSidebar } from "./AdminSidebar";
 
@@ -17,51 +15,10 @@ interface AdminHeaderProps {
 }
 
 export default function AdminHeader({ session }: AdminHeaderProps) {
-  const { theme, toggleTheme } = useTheme();
   const { isCollapsed } = useSidebar();
   const [showLogoutAnimation, setShowLogoutAnimation] = useState(false);
-  const [currentTime, setCurrentTime] = useState("");
-  const [isClient, setIsClient] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-
-  // Handle client-side mounting
-  useEffect(() => {
-    setIsClient(true);
-
-    // Update time immediately
-    const updateTime = () => {
-      setCurrentTime(
-        new Date().toLocaleTimeString("id-ID", {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-      );
-    };
-
-    updateTime();
-
-    // Update time every minute
-    const interval = setInterval(updateTime, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   // Get page info based on pathname
   const getPageInfo = () => {
@@ -222,7 +179,7 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
   };
 
   const handleLogoutComplete = () => {
-    signOut({ callbackUrl: "/admin/login" });
+    signOut({ callbackUrl: "/" });
   };
 
   return (
@@ -286,7 +243,6 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
             <div className="flex items-center gap-2 lg:gap-4">
               <TimeDisplay />
               <ThemeToggle />
-              <NotificationButton count={3} />
               {/* Pass handleLogout to UserMenu */}
               <UserMenu session={session} onLogout={handleLogout} />
             </div>

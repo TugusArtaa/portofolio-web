@@ -44,7 +44,7 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/admin/login",
+    signIn: "/admin/sso/safe-access-admin-entry/A7kz9QpL",
   },
   callbacks: {
     async signIn({ user, account, profile }) {

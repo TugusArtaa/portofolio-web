@@ -3,6 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, createContext, useContext } from "react";
+import dynamic from "next/dynamic";
+
+const Spline = dynamic(
+  () => import("@splinetool/react-spline").then((m) => m.default),
+  {
+    ssr: false,
+  }
+);
 
 // Create context for sidebar state
 const SidebarContext = createContext<{
@@ -179,32 +187,6 @@ export default function AdminSidebar() {
         </svg>
       ),
       gradient: "from-purple-500 to-purple-600",
-    },
-    {
-      name: "Pengaturan",
-      href: "/admin/settings",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      ),
-      gradient: "from-slate-500 to-slate-600",
     },
   ];
 
@@ -403,6 +385,42 @@ export default function AdminSidebar() {
             );
           })}
         </nav>
+
+        {/* Simple Interactive Bot Card */}
+        <div className="mt-auto p-3 sm:p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-md overflow-hidden">
+            {/* Header */}
+            {!isCollapsed && (
+              <div className="flex flex-row items-center justify-between gap-2 p-3 sm:p-4 border-b border-slate-200 dark:border-slate-700 flex-wrap">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
+                    Interactive Bot
+                  </span>
+                </div>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                </div>
+              </div>
+            )}
+
+            {/* Spline Container */}
+            <div
+              className={`bg-white dark:bg-slate-900 w-full ${
+                isCollapsed
+                  ? "h-20 xs:h-24 sm:h-28"
+                  : "h-40 xs:h-44 sm:h-48 md:h-56"
+              }`}
+            >
+              <Spline
+                scene="https://prod.spline.design/GzIW9z2Cvb6uu0Ts/scene.splinecode"
+                className="w-full h-full"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

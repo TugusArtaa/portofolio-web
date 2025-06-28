@@ -13,6 +13,7 @@
     "@next-auth/supabase-adapter": "^0.2.1",
     "@prisma/client": "^6.10.1",
     "@radix-ui/react-slot": "^1.2.3",
+    "@splinetool/react-spline": "^4.0.0",
     "@supabase/supabase-js": "^2.50.0",
     "@types/bcryptjs": "^3.0.0",
     "bcryptjs": "^3.0.2",

@@ -11,7 +11,7 @@ export default withAuth(
         const { pathname } = req.nextUrl;
 
         // Allow access to login page without token
-        if (pathname === "/admin/login") {
+        if (pathname === "/admin/sso/safe-access-admin-entry/A7kz9QpL") {
           return true;
         }
 
