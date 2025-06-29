@@ -18,7 +18,7 @@ export default function ConditionalLayout({
 
   return (
     <>
-      <Navbar />
+      <Navbar className="" />
       <main className="min-h-screen px-4 py-6">{children}</main>
       <Footer />
     </>

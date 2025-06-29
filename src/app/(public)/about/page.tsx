@@ -1,188 +1,168 @@
-"use client";
+import React from "react";
 
-import { useEffect, useState } from "react";
-
-const ABOUT_ORDER = [
-  "who_am_i",
-  "education",
-  "quote",
-  "whatsapp",
-  "gmail",
-  "instagram",
-  "github",
-  "linkedin",
-  "discord",
-  "call_to_action",
-];
-
-const ABOUT_LABELS: Record<string, string> = {
-  who_am_i: "Who Am I",
-  education: "Education",
-  quote: "Quote",
-  whatsapp: "WhatsApp",
-  gmail: "Gmail",
-  instagram: "Instagram",
-  github: "GitHub",
-  linkedin: "LinkedIn",
-  discord: "Discord",
-  call_to_action: "Call To Action",
-};
-
-export default function AboutPage() {
-  const [aboutList, setAboutList] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/about")
-      .then((res) => res.json())
-      .then((data) => {
-        // Sort by ABOUT_ORDER
-        const sorted = [...data].sort(
-          (a, b) => ABOUT_ORDER.indexOf(a.id) - ABOUT_ORDER.indexOf(b.id)
-        );
-        setAboutList(sorted);
-      })
-      .catch(() => setAboutList([]))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  // Cari data secara individual
-  const whoAmIData = aboutList.find((item) => item.id === "who_am_i");
-  const educationData = aboutList.find((item) => item.id === "education");
-  const quoteData = aboutList.find((item) => item.id === "quote");
-  const whatsappData = aboutList.find((item) => item.id === "whatsapp");
-  const gmailData = aboutList.find((item) => item.id === "gmail");
-  const instagramData = aboutList.find((item) => item.id === "instagram");
-  const githubData = aboutList.find((item) => item.id === "github");
-  const linkedinData = aboutList.find((item) => item.id === "linkedin");
-  const discordData = aboutList.find((item) => item.id === "discord");
-  const callToActionData = aboutList.find(
-    (item) => item.id === "call_to_action"
+// Fungsi fetch data dari API public
+async function getData(endpoint: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/public/${endpoint}`,
+    { cache: "no-store" }
   );
+  if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
+  return res.json();
+}
+
+export default async function AboutPage() {
+  const [about, skills, tools, certificates] = await Promise.all([
+    getData("about"),
+    getData("skill"),
+    getData("tool"),
+    getData("certificate"),
+  ]);
+
+  // Ambil masing-masing bagian about berdasarkan id
+  const getAboutById = (id: string) =>
+    Array.isArray(about)
+      ? about.find((item: any) => item.id === id)
+      : undefined;
+
+  const whoAmI = getAboutById("who_am_i");
+  const education = getAboutById("education");
+  const quote = getAboutById("quote");
+  const callToAction = getAboutById("call_to_action");
 
   return (
-    <section className="max-w-3xl mx-auto py-8 px-4 space-y-8">
-      <h1 className="text-3xl font-semibold mb-2">Tentang Saya</h1>
-      <p className="text-slate-600 dark:text-slate-300 mb-6">
-        Seluruh informasi tentang saya, pendidikan, kontak, dan lainnya.
-      </p>
-      {isLoading ? (
-        <div className="flex flex-col gap-6">
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={i}
-              className="h-8 bg-slate-100 dark:bg-slate-800 rounded-md animate-pulse"
-            ></div>
-          ))}
-        </div>
-      ) : aboutList.length === 0 ? (
-        <div className="text-center text-slate-400 dark:text-slate-500 italic py-12">
-          Belum ada data about yang tersedia.
-        </div>
-      ) : (
-        <div className="flex flex-col gap-6">
-          {whoAmIData && (
-            <div className="styling-khusus-who-am-i">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["who_am_i"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {whoAmIData.content}
-              </div>
-            </div>
-          )}
-          {educationData && (
-            <div className="styling-khusus-education">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["education"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {educationData.content}
-              </div>
-            </div>
-          )}
-          {quoteData && (
-            <div className="styling-khusus-quote">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["quote"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {quoteData.content}
-              </div>
-            </div>
-          )}
-          {whatsappData && (
-            <div className="styling-khusus-whatsapp">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["whatsapp"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {whatsappData.content}
-              </div>
-            </div>
-          )}
-          {gmailData && (
-            <div className="styling-khusus-gmail">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["gmail"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {gmailData.content}
-              </div>
-            </div>
-          )}
-          {instagramData && (
-            <div className="styling-khusus-instagram">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["instagram"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {instagramData.content}
-              </div>
-            </div>
-          )}
-          {githubData && (
-            <div className="styling-khusus-github">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["github"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {githubData.content}
-              </div>
-            </div>
-          )}
-          {linkedinData && (
-            <div className="styling-khusus-linkedin">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["linkedin"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {linkedinData.content}
-              </div>
-            </div>
-          )}
-          {discordData && (
-            <div className="styling-khusus-discord">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["discord"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {discordData.content}
-              </div>
-            </div>
-          )}
-          {callToActionData && (
-            <div className="styling-khusus-call-to-action">
-              <div className="font-semibold text-slate-800 dark:text-slate-100 mb-1">
-                {ABOUT_LABELS["call_to_action"]}
-              </div>
-              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-line">
-                {callToActionData.content}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+    <section className="max-w-4xl mx-auto py-12 text-center">
+      {/* Who Am I */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-2">Tentang Saya</h2>
+        {whoAmI ? (
+          <p className="text-lg">
+            {whoAmI.content || whoAmI.value || whoAmI.description}
+          </p>
+        ) : (
+          <p>Tidak ada data tentang saya.</p>
+        )}
+      </div>
+
+      {/* Education */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-2">Pendidikan</h2>
+        {education ? (
+          <p className="text-lg">
+            {education.content || education.value || education.description}
+          </p>
+        ) : (
+          <p>Tidak ada data pendidikan.</p>
+        )}
+      </div>
+
+      {/* Quote */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-2">Quote</h2>
+        {quote ? (
+          <blockquote className="italic text-lg border-l-4 border-blue-400 pl-4">
+            {quote.content || quote.value || quote.description}
+          </blockquote>
+        ) : (
+          <p>Tidak ada quote.</p>
+        )}
+      </div>
+
+      {/* Call To Action */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-2">Ayo Terhubung</h2>
+        {callToAction ? (
+          <p className="text-lg">
+            {callToAction.content ||
+              callToAction.value ||
+              callToAction.description}
+          </p>
+        ) : (
+          <p>Tidak ada call to action.</p>
+        )}
+      </div>
+
+      {/* Skills */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-2">Skill</h2>
+        {Array.isArray(skills) && skills.length > 0 ? (
+          <ul className="flex flex-wrap justify-center gap-3">
+            {skills.map((skill: any) => (
+              <li
+                key={skill.id}
+                className="border rounded px-3 py-1 bg-gray-50 flex items-center gap-2"
+              >
+                {skill.icon && (
+                  <img src={skill.icon} alt={skill.name} className="w-5 h-5" />
+                )}
+                <span>{skill.name}</span>
+                {skill.level && (
+                  <span className="text-xs text-gray-500 ml-2">
+                    ({skill.level})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Tidak ada skill.</p>
+        )}
+      </div>
+
+      {/* Tools */}
+      <div className="mb-10">
+        <h2 className="text-2xl font-semibold mb-2">Tools</h2>
+        {Array.isArray(tools) && tools.length > 0 ? (
+          <ul className="flex flex-wrap justify-center gap-3">
+            {tools.map((tool: any) => (
+              <li
+                key={tool.id}
+                className="border rounded px-3 py-1 bg-gray-50 flex items-center gap-2"
+              >
+                {tool.icon && (
+                  <img src={tool.icon} alt={tool.name} className="w-5 h-5" />
+                )}
+                <span>{tool.name}</span>
+                {tool.level && (
+                  <span className="text-xs text-gray-500 ml-2">
+                    ({tool.level})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Tidak ada tool.</p>
+        )}
+      </div>
+
+      {/* Certificates */}
+      <div>
+        <h2 className="text-2xl font-semibold mb-2">Certificate</h2>
+        {Array.isArray(certificates) && certificates.length > 0 ? (
+          <ul className="grid gap-4">
+            {certificates.map((cert: any) => (
+              <li
+                key={cert.id}
+                className="border rounded p-3 text-left flex flex-col items-start"
+              >
+                <span className="font-semibold">{cert.title}</span>
+                <span className="text-sm text-gray-600">
+                  {cert.issuer} {cert.year && `- ${cert.year}`}
+                </span>
+                {cert.image && (
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    className="w-32 mt-2 rounded"
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Tidak ada certificate.</p>
+        )}
+      </div>
     </section>
   );
 }

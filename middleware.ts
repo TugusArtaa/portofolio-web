@@ -15,12 +15,19 @@ export default withAuth(
           return true;
         }
 
-        // Protect all other admin routes
+        // Protect all /admin routes
         if (pathname.startsWith("/admin")) {
           return !!token;
         }
 
-        // Allow access to all non-admin routes
+        // Protect all /api routes (optional: allow public API if needed)
+        if (pathname.startsWith("/api")) {
+          // Contoh: jika ada API publik, tambahkan pengecualian di sini
+          // if (pathname === "/api/public-endpoint") return true;
+          return !!token;
+        }
+
+        // Allow access to all other non-admin, non-api routes
         return true;
       },
     },
@@ -31,12 +38,11 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - auth (NextAuth routes)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|auth).*)",
+    "/((?!_next/static|_next/image|favicon.ico|auth).*)",
   ],
 };
