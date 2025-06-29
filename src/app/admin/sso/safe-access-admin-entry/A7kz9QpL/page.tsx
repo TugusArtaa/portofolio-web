@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "@/context/ThemeContext";
 import { validateLoginForm } from "@/lib/validation";
+import SplashScreen from "@/components/admin/SplashScreen";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
 
@@ -44,7 +46,10 @@ export default function LoginPage() {
 
       if (res?.ok) {
         setIsLoading(false);
-        router.push("/admin/dashboard");
+        setShowSplash(true);
+        setTimeout(() => {
+          router.push("/admin/dashboard");
+        }, 1500);
       } else {
         setError("Email atau password salah. Silakan coba lagi.");
         setIsLoading(false);
@@ -58,13 +63,23 @@ export default function LoginPage() {
 
   const handleGithubLogin = () => {
     setIsLoading(true);
+    setShowSplash(true);
     setTimeout(() => {
       signIn("github", { callbackUrl: "/admin/dashboard" });
-    }, 100);
+    }, 1200);
   };
 
   if (!mounted) {
     return null;
+  }
+
+  if (showSplash) {
+    return (
+      <SplashScreen
+        messages={["Selamat", "Datang", "di Dashboard", "Admin"]}
+        duration={1500}
+      />
+    );
   }
 
   return (

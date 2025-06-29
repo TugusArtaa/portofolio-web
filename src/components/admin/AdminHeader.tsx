@@ -8,6 +8,7 @@ import ThemeToggle from "./ThemeToggle";
 import UserMenu from "./UserMenu";
 import TimeDisplay from "./TimeDisplay";
 import { useSidebar } from "./AdminSidebar";
+import SplashScreen from "./SplashScreen";
 
 interface AdminHeaderProps {
   session: any;
@@ -17,6 +18,7 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
   const { isCollapsed } = useSidebar();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const [showSplash, setShowSplash] = useState(false);
 
   // Get page info based on pathname
   const getPageInfo = () => {
@@ -173,8 +175,20 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
   const pageInfo = getPageInfo();
 
   const handleLogout = () => {
-    signOut({ callbackUrl: "/" });
+    setShowSplash(true);
+    setTimeout(() => {
+      signOut({ callbackUrl: "/" });
+    }, 1200);
   };
+
+  if (showSplash) {
+    return (
+      <SplashScreen
+        messages={["Terima", "Kasih", "Sampai", "Jumpa!"]}
+        duration={1500}
+      />
+    );
+  }
 
   return (
     <>
