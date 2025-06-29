@@ -1,3 +1,4 @@
+// Interface aturan validasi untuk setiap field
 export interface ValidationRule {
   required?: boolean;
   minLength?: number;
@@ -6,41 +7,43 @@ export interface ValidationRule {
   custom?: (value: string) => string | null;
 }
 
+// Hasil validasi form
 export interface ValidationResult {
   isValid: boolean;
   errors: Record<string, string>;
 }
 
+// Fungsi validasi satu field
 export function validateField(
   value: string,
   rules: ValidationRule
 ): string | null {
-  // Required validation
+  // Validasi required
   if (rules.required && (!value || value.trim() === "")) {
     return "Field ini wajib diisi";
   }
 
-  // Skip other validations if field is empty and not required
+  // Lewati validasi lain jika field kosong & tidak required
   if (!value || value.trim() === "") {
     return null;
   }
 
-  // Min length validation
+  // Validasi panjang minimal
   if (rules.minLength && value.length < rules.minLength) {
     return `Minimal ${rules.minLength} karakter`;
   }
 
-  // Max length validation
+  // Validasi panjang maksimal
   if (rules.maxLength && value.length > rules.maxLength) {
     return `Maksimal ${rules.maxLength} karakter`;
   }
 
-  // Pattern validation
+  // Validasi pola (regex)
   if (rules.pattern && !rules.pattern.test(value)) {
     return "Format tidak valid";
   }
 
-  // Custom validation
+  // Validasi custom
   if (rules.custom) {
     return rules.custom(value);
   }
@@ -48,6 +51,7 @@ export function validateField(
   return null;
 }
 
+// Fungsi validasi seluruh form
 export function validateForm(
   formData: Record<string, string>,
   validationRules: Record<string, ValidationRule>
@@ -70,7 +74,7 @@ export function validateForm(
   };
 }
 
-// Project form validation rules
+// Aturan validasi untuk form Project
 export const projectValidationRules: Record<string, ValidationRule> = {
   title: {
     required: true,
@@ -189,7 +193,7 @@ export const projectValidationRules: Record<string, ValidationRule> = {
   },
 };
 
-// Skill form validation rules
+// Aturan validasi untuk form Skill
 export const skillValidationRules: Record<string, ValidationRule> = {
   name: {
     required: true,
@@ -260,7 +264,7 @@ export const skillValidationRules: Record<string, ValidationRule> = {
   },
 };
 
-// Tool form validation rules
+// Aturan validasi untuk form Tool
 export const toolValidationRules: Record<string, ValidationRule> = {
   name: {
     required: true,
@@ -331,7 +335,7 @@ export const toolValidationRules: Record<string, ValidationRule> = {
   },
 };
 
-// Sertifikat form validation rules
+// Aturan validasi untuk form Sertifikat
 export const sertifikatValidationRules: Record<string, ValidationRule> = {
   title: {
     required: true,
@@ -406,7 +410,7 @@ export const sertifikatValidationRules: Record<string, ValidationRule> = {
   },
 };
 
-// About form validation rules
+// Aturan validasi untuk form About
 export const aboutValidationRules: Record<string, ValidationRule> = {
   id: {
     required: true,
@@ -448,7 +452,7 @@ export const aboutValidationRules: Record<string, ValidationRule> = {
   },
 };
 
-// Login form validation
+// Fungsi validasi form login
 export function validateLoginForm(email: string, password: string): string {
   if (!email.trim()) {
     return "Email wajib diisi";

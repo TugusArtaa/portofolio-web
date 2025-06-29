@@ -5,15 +5,15 @@ import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: AuthOptions = {
-  // Remove SupabaseAdapter - use direct database connection
+  // Konfigurasi provider autentikasi
   providers: [
-    // 🔐 GitHub OAuth login
+    // Provider GitHub OAuth
     GitHubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
     }),
 
-    // 🔐 Login dengan email + password
+    // Provider login dengan email dan password
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -21,17 +21,22 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        // Validasi input email dan password
         if (!credentials?.email || !credentials.password) return null;
 
+        // Cari user berdasarkan email
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
+        // Jika user tidak ditemukan atau tidak ada password
         if (!user || !user.password) return null;
 
+        // Cek kecocokan password
         const isValid = await compare(credentials.password, user.password);
         if (!isValid) return null;
 
+        // Return data user jika valid
         return {
           id: user.id,
           name: user.name,
@@ -47,9 +52,10 @@ export const authOptions: AuthOptions = {
     signIn: "/admin/sso/safe-access-admin-entry/A7kz9QpL",
   },
   callbacks: {
+    // Callback saat proses signIn
     async signIn({ user, account, profile }) {
       try {
-        // Allow GitHub login for specific users
+        // Hanya izinkan user tertentu untuk login via GitHub
         if (account?.provider === "github") {
           const allowedGithubUsers = ["TugusArtaa", "2215323039@pnb.ac.id"];
 
@@ -68,7 +74,7 @@ export const authOptions: AuthOptions = {
             return false;
           }
 
-          // Create or update user in database after GitHub login
+          // Sinkronisasi user GitHub ke database (upsert)
           try {
             await prisma.user.upsert({
               where: { email: user.email! },
@@ -93,12 +99,14 @@ export const authOptions: AuthOptions = {
         return false;
       }
     },
+    // Callback untuk menambah id user ke session
     async session({ session, token }) {
       if (session?.user && token?.sub) {
         session.user.id = token.sub;
       }
       return session;
     },
+    // Callback untuk menambah id user ke JWT token
     async jwt({ user, token }) {
       if (user) {
         token.uid = user.id;

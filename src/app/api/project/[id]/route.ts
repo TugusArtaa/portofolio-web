@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// Handler GET: Mengambil data project berdasarkan id
 export async function GET(_: Request, { params }: { params: { id: string } }) {
   const project = await prisma.project.findUnique({
     where: { id: params.id },
@@ -11,6 +12,7 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
   return NextResponse.json(project);
 }
 
+// Handler PUT: Memperbarui data project berdasarkan id
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
@@ -42,6 +44,7 @@ export async function PUT(
   return NextResponse.json(updated);
 }
 
+// Handler DELETE: Menghapus data project berdasarkan id
 export async function DELETE(
   _: Request,
   { params }: { params: { id: string } }

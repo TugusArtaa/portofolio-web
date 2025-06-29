@@ -251,7 +251,6 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
             <div className="flex items-center gap-2 lg:gap-4">
               <TimeDisplay />
               <ThemeToggle />
-              {/* Pass handleLogout to UserMenu */}
               <UserMenu session={session} onLogout={handleLogout} />
             </div>
           </div>

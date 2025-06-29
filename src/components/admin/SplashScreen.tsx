@@ -38,7 +38,7 @@ export default function SplashScreen({
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-emerald-200 via-blue-200 to-purple-200 dark:from-emerald-900 dark:via-blue-900 dark:to-purple-900 transition-all duration-1000 px-4 sm:px-6 lg:px-8
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-slate-900 dark:via-blue-900 dark:to-pink-900 transition-all duration-1000 px-4 sm:px-6 lg:px-8
       ${isVisible ? "opacity-100" : "opacity-0"}`}
     >
       <div className="relative flex flex-col items-center gap-6 sm:gap-8 z-10 w-full max-w-sm sm:max-w-md">

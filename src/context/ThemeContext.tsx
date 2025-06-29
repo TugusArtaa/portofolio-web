@@ -9,6 +9,7 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
+// Membuat context untuk theme (light/dark)
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -18,7 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setIsClient(true);
 
-    // Check for saved theme preference or default to system preference
+    // Cek preferensi theme yang tersimpan atau gunakan preferensi sistem
     const savedTheme = localStorage.getItem("theme") as Theme;
     const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
       .matches
@@ -30,6 +31,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     updateTheme(initialTheme);
   }, []);
 
+  // Fungsi untuk mengubah theme dan update localStorage
   const updateTheme = (newTheme: Theme) => {
     if (typeof window !== "undefined") {
       if (newTheme === "dark") {
@@ -41,6 +43,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Fungsi toggle theme (light <-> dark)
   const toggleTheme = () => {
     if (!isClient) return;
 
@@ -56,6 +59,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Custom hook untuk menggunakan context theme
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {

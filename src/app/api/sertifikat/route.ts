@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// Handler GET: Mengambil semua data sertifikat, diurutkan berdasarkan tanggal terbit terbaru
 export async function GET() {
   const certificates = await prisma.certificate.findMany({
     orderBy: { issueDate: "desc" },
@@ -8,9 +9,11 @@ export async function GET() {
   return NextResponse.json(certificates);
 }
 
+// Handler POST: Menambah data sertifikat baru
 export async function POST(req: Request) {
   const body = await req.json();
   const { id, title, issuer, issueDate, expireDate, image, userId } = body;
+  // Validasi: id, title, issuer, dan issueDate wajib diisi
   if (!id || !title || !issuer || !issueDate) {
     return NextResponse.json(
       { message: "Field 'id', 'title', 'issuer', dan 'issueDate' wajib diisi" },

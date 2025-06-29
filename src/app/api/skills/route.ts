@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+// Handler GET: Mengambil semua data skill, diurutkan dari terbaru
 export async function GET() {
   const skills = await prisma.skill.findMany({
     orderBy: { createdAt: "desc" },
@@ -8,9 +9,11 @@ export async function GET() {
   return NextResponse.json(skills);
 }
 
+// Handler POST: Menambah data skill baru
 export async function POST(req: Request) {
   const body = await req.json();
   const { id, name, level, icon } = body;
+  // Validasi: id dan name wajib diisi
   if (!id || !name) {
     return NextResponse.json(
       { message: "Field 'id' dan 'name' wajib diisi" },

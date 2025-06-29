@@ -30,12 +30,12 @@ export default function ThemeToggle() {
         {/* Sun Icon */}
         <svg
           className={`absolute inset-0 w-5 h-5 transition-all duration-500 ease-in-out ${
-            theme === "light"
+            theme === "dark"
               ? "rotate-0 scale-100 opacity-100"
               : "rotate-90 scale-0 opacity-0"
           }`}
           fill="none"
-          stroke="currentColor"
+          stroke="#facc15"
           viewBox="0 0 24 24"
         >
           <circle cx="12" cy="12" r="5" />
@@ -45,7 +45,7 @@ export default function ThemeToggle() {
         {/* Moon Icon */}
         <svg
           className={`absolute inset-0 w-5 h-5 transition-all duration-500 ease-in-out ${
-            theme === "dark"
+            theme === "light"
               ? "rotate-0 scale-100 opacity-100"
               : "-rotate-90 scale-0 opacity-0"
           }`}

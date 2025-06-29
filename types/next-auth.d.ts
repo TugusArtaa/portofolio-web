@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 
+// Deklarasi ekstensi tipe untuk modul next-auth
 declare module "next-auth" {
+  // Struktur data session yang digunakan aplikasi
   interface Session {
     user: {
       id: string;
@@ -10,6 +12,7 @@ declare module "next-auth" {
     };
   }
 
+  // Struktur data user yang digunakan aplikasi
   interface User {
     id: string;
     name?: string | null;
@@ -18,6 +21,7 @@ declare module "next-auth" {
   }
 }
 
+// Ekstensi tipe untuk JWT (JSON Web Token)
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;

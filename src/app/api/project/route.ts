@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// Handler GET: Mengambil semua data project, diurutkan dari terbaru
 export async function GET() {
   const projects = await prisma.project.findMany({
     orderBy: { createdAt: "desc" },
@@ -8,6 +9,7 @@ export async function GET() {
   return NextResponse.json(projects);
 }
 
+// Handler POST: Menambah data project baru
 export async function POST(req: Request) {
   const data = await req.json();
 

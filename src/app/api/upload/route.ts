@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
 
+    // Validasi: file harus ada
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
@@ -14,15 +15,15 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Create unique filename
+    // Membuat nama file unik berdasarkan timestamp
     const timestamp = Date.now();
     const filename = `${timestamp}-${file.name.replace(/\s+/g, "-")}`;
     const path = join(process.cwd(), "public", "uploads", filename);
 
-    // Save file
+    // Menyimpan file ke direktori uploads
     await writeFile(path, buffer);
 
-    // Return the URL
+    // Mengembalikan URL file yang di-upload
     const url = `/uploads/${filename}`;
 
     return NextResponse.json({ url });
