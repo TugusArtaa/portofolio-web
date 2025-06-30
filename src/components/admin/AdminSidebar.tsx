@@ -3,14 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, createContext, useContext } from "react";
-import dynamic from "next/dynamic";
-
-const Spline = dynamic(
-  () => import("@splinetool/react-spline").then((m) => m.default),
-  {
-    ssr: false,
-  }
-);
 
 // Create context for sidebar state
 const SidebarContext = createContext<{
@@ -385,42 +377,6 @@ export default function AdminSidebar() {
             );
           })}
         </nav>
-
-        {/* Simple Interactive Bot Card */}
-        <div className="mt-auto p-3 sm:p-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-md overflow-hidden">
-            {/* Header */}
-            {!isCollapsed && (
-              <div className="flex flex-row items-center justify-between gap-2 p-3 sm:p-4 border-b border-slate-200 dark:border-slate-700 flex-wrap">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
-                    Interactive Bot
-                  </span>
-                </div>
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                </div>
-              </div>
-            )}
-
-            {/* Spline Container */}
-            <div
-              className={`bg-white dark:bg-slate-900 w-full ${
-                isCollapsed
-                  ? "h-20 xs:h-24 sm:h-28"
-                  : "h-40 xs:h-44 sm:h-48 md:h-56"
-              }`}
-            >
-              <Spline
-                scene="https://prod.spline.design/GzIW9z2Cvb6uu0Ts/scene.splinecode"
-                className="w-full h-full"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );
