@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id">
-      <body className="bg-white dark:bg-slate-900">
+      <body className="bg-white dark:bg-slate-950">
         {/* Provider untuk tema dark/light */}
         <ThemeProvider>
           {/* Provider untuk notifikasi toast */}

@@ -7,10 +7,10 @@ import ThemeToggle from "../admin/ThemeToggle";
 import { useState, useEffect } from "react";
 
 const links = [
-  { href: "/", label: "Beranda" },
-  { href: "/about", label: "Tentang" },
-  { href: "/projects", label: "Proyek" },
-  { href: "/contact", label: "Kontak" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/projects", label: "Projects" },
+  { href: "/contact", label: "Contact" },
 ];
 
 // Social Media Icons Components
@@ -65,7 +65,8 @@ export function Navbar({
       {/* Transparent Header Container */}
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-sm shadow-lg transition-all duration-300",
+          // Ganti background dan shadow agar sesuai palette
+          "fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm shadow-lg transition-all duration-300 border-b border-sky-400/40 dark:border-sky-400/40",
           className
         )}
         style={style}
@@ -76,7 +77,34 @@ export function Navbar({
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center space-x-2 group">
                 <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 ease-out shadow-lg shadow-purple-500/25">
-                  <span className="text-white font-bold text-sm">T</span>
+                  <svg
+                    className="w-8 h-8 transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 ease-out"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20 24L8 32L20 40"
+                      stroke="white"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M44 24L56 32L44 40"
+                      stroke="white"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M28 48L36 16"
+                      stroke="white"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </div>
                 <span className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent group-hover:from-purple-600 group-hover:to-blue-600 dark:group-hover:from-purple-400 dark:group-hover:to-blue-400 transition-all duration-300">
                   Tuagus
@@ -86,7 +114,7 @@ export function Navbar({
 
             {/* Center Navigation Menu - Rounded Border Container */}
             <div className="hidden md:block absolute pb-0.5 left-1/2 -translate-x-1/2">
-              <nav className="bg-white/20 dark:bg-slate-900/30 backdrop-blur-lg border border-white/30 dark:border-slate-700/40 rounded-full px-4 py-2 shadow-lg shadow-purple-500/10 dark:shadow-purple-500/20 hover:shadow-purple-500/20 dark:hover:shadow-purple-500/30 transition-all duration-300">
+              <nav className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border border-sky-400/40 dark:border-sky-400/40 rounded-full px-4 py-2 shadow-lg shadow-sky-400/10 dark:shadow-sky-500/10 hover:shadow-sky-400/20 dark:hover:shadow-sky-500/20 transition-all duration-300">
                 <div className="flex items-center space-x-1">
                   {links.map((link, index) => (
                     <Link
@@ -95,17 +123,24 @@ export function Navbar({
                       className={cn(
                         "px-4 py-2 rounded-full text-sm font-medium transition-all duration-500 ease-out relative overflow-hidden group",
                         pathname === link.href
-                          ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg shadow-purple-500/30 scale-105"
-                          : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-slate-700/30 hover:scale-105"
+                          ? "bg-sky-500 text-white shadow-lg shadow-sky-500/30 scale-105"
+                          : "text-sky-900 dark:text-white hover:text-sky-900 dark:hover:text-white hover:bg-sky-400/10 dark:hover:bg-sky-400/10 hover:scale-105"
                       )}
                       style={{
                         animationDelay: `${index * 100}ms`,
                       }}
                     >
+                      {/* Always render the background div for hover effect */}
+                      <div
+                        className={cn(
+                          "absolute inset-0 rounded-full pointer-events-none transition-opacity duration-500 ease-out",
+                          pathname === link.href
+                            ? "opacity-0"
+                            : "bg-sky-400/10 opacity-0 group-hover:opacity-100"
+                        )}
+                        aria-hidden="true"
+                      />
                       <span className="relative z-10">{link.label}</span>
-                      {pathname !== link.href && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out" />
-                      )}
                     </Link>
                   ))}
                 </div>
@@ -204,7 +239,7 @@ export function Navbar({
           )}
         >
           {/* Mobile Menu Container */}
-          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/30 dark:border-slate-700/40 rounded-2xl shadow-2xl p-6 transform-gpu">
+          <div className="bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border border-sky-400/40 dark:border-sky-400/40 rounded-2xl shadow-2xl p-6 transform-gpu">
             <div className="space-y-2">
               {links.map((link, index) => (
                 <Link
@@ -214,8 +249,8 @@ export function Navbar({
                   className={cn(
                     "block px-6 py-3 rounded-full text-center font-medium transition-all duration-500 ease-out transform hover:scale-105 relative overflow-hidden group",
                     pathname === link.href
-                      ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg shadow-purple-500/30"
-                      : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/30 dark:hover:bg-slate-700/30"
+                      ? "bg-sky-500 text-white shadow-lg shadow-sky-500/30"
+                      : "text-sky-900 dark:text-white hover:text-sky-900 dark:hover:text-white hover:bg-sky-400/10 dark:hover:bg-sky-400/10"
                   )}
                   style={{
                     animationDelay: `${index * 100 + 200}ms`,
@@ -224,10 +259,17 @@ export function Navbar({
                       : "none",
                   }}
                 >
+                  {/* Always render the background div for hover effect */}
+                  <div
+                    className={cn(
+                      "absolute inset-0 rounded-full pointer-events-none transition-opacity duration-500 ease-out",
+                      pathname === link.href
+                        ? "opacity-0"
+                        : "bg-sky-400/10 opacity-0 group-hover:opacity-100"
+                    )}
+                    aria-hidden="true"
+                  />
                   <span className="relative z-10">{link.label}</span>
-                  {pathname !== link.href && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-out" />
-                  )}
                 </Link>
               ))}
             </div>
