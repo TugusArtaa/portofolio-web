@@ -93,7 +93,7 @@ export default function HomePage() {
                 <ProfileCard
                   name="Putu Aguss"
                   title="Front-end Developer"
-                  avatarUrl="/avatar.jpg"
+                  avatarUrl="/Avatar.jpg"
                   handle="Putuaguss"
                   status="Simplicity."
                   contactText="Hello!"
