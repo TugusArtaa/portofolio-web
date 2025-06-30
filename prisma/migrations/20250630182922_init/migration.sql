@@ -75,16 +75,6 @@ CREATE TABLE "About" (
 );
 
 -- CreateTable
-CREATE TABLE "ChatMessage" (
-    "id" TEXT NOT NULL,
-    "sender" TEXT NOT NULL,
-    "message" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "ChatMessage_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,

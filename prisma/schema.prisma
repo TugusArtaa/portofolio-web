@@ -79,13 +79,6 @@ model About {
   updatedAt DateTime @updatedAt
 }
 
-model ChatMessage {
-  id        String   @id @default(cuid())
-  sender    String
-  message   String
-  createdAt DateTime @default(now())
-}
-
 model VerificationToken {
   identifier String
   token      String   @unique
