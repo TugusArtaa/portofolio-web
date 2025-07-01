@@ -1,15 +1,12 @@
 "use client";
 
+import { Skill } from "@prisma/client";
+
 interface SkillsCardProps {
-  skill: {
-    id: string;
-    name: string;
-    level: string;
-    icon?: string;
-  };
+  skill: Skill;
   index: number;
-  onDelete: (skill: any) => void;
-  onEdit: (skill: any) => void;
+  onDelete: (skill: Skill) => void;
+  onEdit: (skill: Skill) => void;
   showActions?: boolean;
   variant?: "admin" | "public";
 }
@@ -64,7 +61,7 @@ export default function SkillsCard({
   showActions = true,
   variant = "admin",
 }: SkillsCardProps) {
-  const levelConfig = getLevelConfig(skill.level);
+  const levelConfig = getLevelConfig(skill.level || "Beginner");
 
   return (
     <div

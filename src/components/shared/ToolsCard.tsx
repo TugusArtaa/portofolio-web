@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Tool } from "@prisma/client";
 
 // Level config mirip SkillsCard
 const getLevelConfig = (level: string) => {
@@ -46,15 +47,10 @@ const getLevelConfig = (level: string) => {
 };
 
 interface ToolsCardProps {
-  tool: {
-    id: string;
-    name: string;
-    level: string;
-    icon?: string;
-  };
+  tool: Tool;
   index: number;
-  onEdit: (tool: any) => void;
-  onDelete: (tool: any) => void;
+  onEdit: (tool: Tool) => void;
+  onDelete: (tool: Tool) => void;
   showActions?: boolean;
   variant?: "admin" | "public";
 }
@@ -67,7 +63,7 @@ export default function ToolsCard({
   showActions = true,
   variant = "admin",
 }: ToolsCardProps) {
-  const levelConfig = getLevelConfig(tool.level);
+  const levelConfig = getLevelConfig(tool.level || "Beginner");
 
   return (
     <div

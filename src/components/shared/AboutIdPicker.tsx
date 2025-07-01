@@ -1,15 +1,18 @@
 import React from "react";
+import { About } from "@prisma/client";
+
+interface AboutIdOption {
+  value: string;
+  label: string;
+  icon: string;
+  color: string;
+}
 
 interface AboutIdPickerProps {
-  ABOUT_IDS: {
-    value: string;
-    label: string;
-    icon: string;
-    color: string;
-  }[];
-  existing?: any;
-  availableIds: any[];
-  displayedIds: any[];
+  ABOUT_IDS: AboutIdOption[];
+  existing?: About;
+  availableIds: AboutIdOption[];
+  displayedIds: AboutIdOption[];
   formId: string;
   errors: Record<string, string>;
   touched: Record<string, boolean>;

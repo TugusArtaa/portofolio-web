@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import SertifikatForm from "../../_form";
+import { Certificate } from "@prisma/client";
 
 export default function SertifikatEditPage({
   params,
@@ -9,7 +10,7 @@ export default function SertifikatEditPage({
   params: Promise<{ id: string }>;
 }) {
   const actualParams = use(params);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Certificate | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,7 +42,7 @@ export default function SertifikatEditPage({
 
   return (
     <SertifikatForm
-      existing={data}
+      existing={data as Certificate}
       onSuccess={() => (window.location.href = "/admin/sertifikat")}
       onCancel={() => (window.location.href = "/admin/sertifikat")}
     />

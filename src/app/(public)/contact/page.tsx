@@ -1,13 +1,19 @@
 import React from "react";
 import Image from "next/image";
+import { About } from "@prisma/client";
 
-async function getContactAbout() {
+type ContactAbout = About & {
+  value?: string;
+  description?: string;
+};
+
+async function getContactAbout(): Promise<ContactAbout[]> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/public/about`,
     { cache: "no-store" }
   );
   if (!res.ok) throw new Error("Failed to fetch about");
-  const about = await res.json();
+  const about: ContactAbout[] = await res.json();
   // Filter hanya contact
   const contactIds = [
     "gmail",
@@ -18,7 +24,7 @@ async function getContactAbout() {
     "discord",
   ];
   return Array.isArray(about)
-    ? about.filter((item: any) => contactIds.includes(item.id))
+    ? about.filter((item) => contactIds.includes(item.id))
     : [];
 }
 
@@ -26,9 +32,9 @@ export default async function ContactPage() {
   const contacts = await getContactAbout();
 
   // Pisahkan masing-masing kontak berdasarkan id
-  const getContactById = (id: string) =>
+  const getContactById = (id: string): ContactAbout | undefined =>
     Array.isArray(contacts)
-      ? contacts.find((item: any) => item.id === id)
+      ? contacts.find((item) => item.id === id)
       : undefined;
 
   const gmail = getContactById("gmail");
@@ -196,7 +202,7 @@ export default async function ContactPage() {
           <div className="w-full lg:w-1/2 flex justify-center mb-8 lg:mb-0">
             <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-lg shadow-sky-400/10 dark:shadow-sky-500/10 bg-neutral-100 dark:bg-slate-900">
               <Image
-                src="/About.jpg"
+                src="/photo/about_photo.svg"
                 alt="Contact Illustration"
                 fill
                 className="object-cover"

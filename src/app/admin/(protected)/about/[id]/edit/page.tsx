@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import AboutForm from "../../_form";
+import { About } from "@prisma/client";
 
 export default function AboutEditPage({
   params,
@@ -9,7 +10,7 @@ export default function AboutEditPage({
   params: Promise<{ id: string }>;
 }) {
   const actualParams = use(params);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<About | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,7 +42,7 @@ export default function AboutEditPage({
 
   return (
     <AboutForm
-      existing={data}
+      existing={data as About}
       onSuccess={() => (window.location.href = "/admin/about")}
       onCancel={() => (window.location.href = "/admin/about")}
     />

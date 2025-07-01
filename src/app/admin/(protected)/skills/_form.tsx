@@ -12,9 +12,10 @@ import {
   validateField,
   skillValidationRules,
 } from "@/lib/validation";
+import { Skill } from "@prisma/client";
 
 interface SkillFormProps {
-  existing?: any;
+  existing?: Skill;
   onSuccess?: () => void;
   onCancel?: () => void;
 }

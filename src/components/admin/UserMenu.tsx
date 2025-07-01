@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
+import { Session } from "next-auth";
 
 interface UserMenuProps {
-  session: any;
+  session: Session;
   className?: string;
   onLogout?: () => void;
 }

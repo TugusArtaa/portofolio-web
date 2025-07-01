@@ -11,9 +11,10 @@ import {
   validateField,
   projectValidationRules,
 } from "@/lib/validation";
+import { Project } from "@prisma/client";
 
 interface ProjectFormProps {
-  existing?: any;
+  existing?: Project;
   onSuccess?: () => void;
 }
 
@@ -35,8 +36,14 @@ export default function ProjectForm({ existing, onSuccess }: ProjectFormProps) {
   useEffect(() => {
     if (existing) {
       setForm({
-        ...existing,
-        techStack: existing.techStack.join(","),
+        title: existing.title,
+        slug: existing.slug,
+        description: existing.description,
+        techStack: Array.isArray(existing.techStack)
+          ? existing.techStack.join(",")
+          : "",
+        coverImage: existing.coverImage || "",
+        url: existing.url ?? "",
       });
       setPreviewImage(existing.coverImage || "");
     }

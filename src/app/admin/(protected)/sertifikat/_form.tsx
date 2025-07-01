@@ -11,9 +11,10 @@ import {
   validateField,
   sertifikatValidationRules,
 } from "@/lib/validation";
+import { Certificate } from "@prisma/client";
 
 interface SertifikatFormProps {
-  existing?: any;
+  existing?: Certificate;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
@@ -42,8 +43,12 @@ export default function SertifikatForm({
         id: existing.id || "",
         title: existing.title || "",
         issuer: existing.issuer || "",
-        issueDate: existing.issueDate ? existing.issueDate.slice(0, 10) : "",
-        expireDate: existing.expireDate ? existing.expireDate.slice(0, 10) : "",
+        issueDate:
+          existing.issueDate &&
+          new Date(existing.issueDate).toISOString().slice(0, 10),
+        expireDate: existing.expireDate
+          ? new Date(existing.expireDate).toISOString().slice(0, 10)
+          : "",
         image: existing.image || "",
       });
     }

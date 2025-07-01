@@ -9,14 +9,15 @@ import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
 import SkillsCard from "@/components/shared/SkillsCard";
+import { Skill } from "@prisma/client";
 
 export default function SkillsPage() {
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
-    skill: any | null;
+    skill: Skill | null;
   }>({
     isOpen: false,
     skill: null,
@@ -31,7 +32,7 @@ export default function SkillsPage() {
     setIsLoading(true);
     try {
       const res = await fetch("/api/skills");
-      const data = await res.json();
+      const data: Skill[] = await res.json();
       setSkills(data);
     } catch {
       addToast({
@@ -59,11 +60,11 @@ export default function SkillsPage() {
     router.push("/admin/skills/new");
   };
 
-  const handleEdit = (skill: any) => {
+  const handleEdit = (skill: Skill) => {
     router.push(`/admin/skills/${skill.id}/edit`);
   };
 
-  const handleDelete = (skill: any) => {
+  const handleDelete = (skill: Skill) => {
     setDeleteModal({ isOpen: true, skill });
   };
 

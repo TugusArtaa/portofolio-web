@@ -8,14 +8,15 @@ import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
 import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
 import { useToast } from "@/components/ui/toast";
+import { Project } from "@prisma/client";
 
 export default function ProjectListPage() {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
-    project: any | null;
+    project: Project | null;
   }>({
     isOpen: false,
     project: null,
@@ -29,7 +30,7 @@ export default function ProjectListPage() {
     setIsLoading(true);
     try {
       const res = await fetch("/api/project");
-      const data = await res.json();
+      const data: Project[] = await res.json();
       setProjects(data);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -44,7 +45,7 @@ export default function ProjectListPage() {
     }
   };
 
-  const deleteProject = async (project: any) => {
+  const deleteProject = async (project: Project) => {
     setDeleteModal({ isOpen: true, project });
   };
 

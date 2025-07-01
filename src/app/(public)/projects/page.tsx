@@ -1,4 +1,5 @@
 import React from "react";
+import { Project } from "@prisma/client";
 
 async function getProjects() {
   const res = await fetch(
@@ -12,17 +13,15 @@ async function getProjects() {
 }
 
 export default async function ProjectPage() {
-  const projects = await getProjects();
+  const projects: Project[] = await getProjects();
 
   return (
     <section className="max-w-4xl mx-auto py-12 text-center">
       <div className="grid gap-6 mt-8">
         {projects.length === 0 && <p>Tidak ada project.</p>}
-        {projects.map((project: any) => (
+        {projects.map((project: Project) => (
           <div key={project.id} className="border rounded p-4 text-left">
-            <h2 className="text-2xl font-semibold">
-              {project.title || project.name}
-            </h2>
+            <h2 className="text-2xl font-semibold">{project.title}</h2>
             {project.description && (
               <p className="mt-2 text-gray-700">{project.description}</p>
             )}

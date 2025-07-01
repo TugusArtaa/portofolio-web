@@ -12,9 +12,10 @@ import {
   validateField,
   toolValidationRules,
 } from "@/lib/validation";
+import { Tool } from "@prisma/client";
 
 interface ToolsFormProps {
-  existing?: any;
+  existing?: Tool;
   onSuccess?: () => void;
   onCancel?: () => void;
 }

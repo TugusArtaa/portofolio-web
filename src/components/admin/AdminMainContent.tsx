@@ -2,9 +2,10 @@
 
 import { useSidebar } from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
+import { Session } from "next-auth";
 
 interface AdminMainContentProps {
-  session: any;
+  session: Session;
   children: React.ReactNode;
 }
 

@@ -9,14 +9,15 @@ import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
 import SertifikatCard from "@/components/shared/SertifikatCard";
+import { Certificate } from "@prisma/client";
 
 export default function SertifikatPage() {
-  const [certList, setCertList] = useState<any[]>([]);
+  const [certList, setCertList] = useState<Certificate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
-    cert: any | null;
+    cert: Certificate | null;
   }>({
     isOpen: false,
     cert: null,
@@ -31,7 +32,7 @@ export default function SertifikatPage() {
     setIsLoading(true);
     try {
       const res = await fetch("/api/sertifikat");
-      const data = await res.json();
+      const data: Certificate[] = await res.json();
       setCertList(data);
     } catch {
       addToast({
@@ -59,11 +60,11 @@ export default function SertifikatPage() {
     router.push("/admin/sertifikat/new");
   };
 
-  const handleEdit = (cert: any) => {
+  const handleEdit = (cert: Certificate) => {
     router.push(`/admin/sertifikat/${cert.id}/edit`);
   };
 
-  const handleDelete = (cert: any) => {
+  const handleDelete = (cert: Certificate) => {
     setDeleteModal({ isOpen: true, cert });
   };
 

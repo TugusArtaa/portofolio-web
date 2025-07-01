@@ -1,4 +1,5 @@
 import React from "react";
+import { About, Skill, Tool, Certificate } from "@prisma/client";
 
 // Fungsi fetch data dari API public
 async function getData(endpoint: string) {
@@ -11,7 +12,12 @@ async function getData(endpoint: string) {
 }
 
 export default async function AboutPage() {
-  const [about, skills, tools, certificates] = await Promise.all([
+  const [about, skills, tools, certificates]: [
+    About[],
+    Skill[],
+    Tool[],
+    Certificate[]
+  ] = await Promise.all([
     getData("about"),
     getData("skill"),
     getData("tool"),
@@ -19,10 +25,8 @@ export default async function AboutPage() {
   ]);
 
   // Ambil masing-masing bagian about berdasarkan id
-  const getAboutById = (id: string) =>
-    Array.isArray(about)
-      ? about.find((item: any) => item.id === id)
-      : undefined;
+  const getAboutById = (id: string): About | undefined =>
+    Array.isArray(about) ? about.find((item) => item.id === id) : undefined;
 
   const whoAmI = getAboutById("who_am_i");
   const education = getAboutById("education");
@@ -36,7 +40,7 @@ export default async function AboutPage() {
         <h2 className="text-2xl font-semibold mb-2">Tentang Saya</h2>
         {whoAmI ? (
           <p className="text-lg">
-            {whoAmI.content || whoAmI.value || whoAmI.description}
+            {whoAmI.content /* About hanya punya content dan updatedAt */}
           </p>
         ) : (
           <p>Tidak ada data tentang saya.</p>
@@ -47,9 +51,7 @@ export default async function AboutPage() {
       <div className="mb-10">
         <h2 className="text-2xl font-semibold mb-2">Pendidikan</h2>
         {education ? (
-          <p className="text-lg">
-            {education.content || education.value || education.description}
-          </p>
+          <p className="text-lg">{education.content}</p>
         ) : (
           <p>Tidak ada data pendidikan.</p>
         )}
@@ -60,7 +62,7 @@ export default async function AboutPage() {
         <h2 className="text-2xl font-semibold mb-2">Quote</h2>
         {quote ? (
           <blockquote className="italic text-lg border-l-4 border-blue-400 pl-4">
-            {quote.content || quote.value || quote.description}
+            {quote.content}
           </blockquote>
         ) : (
           <p>Tidak ada quote.</p>
@@ -71,11 +73,7 @@ export default async function AboutPage() {
       <div className="mb-10">
         <h2 className="text-2xl font-semibold mb-2">Ayo Terhubung</h2>
         {callToAction ? (
-          <p className="text-lg">
-            {callToAction.content ||
-              callToAction.value ||
-              callToAction.description}
-          </p>
+          <p className="text-lg">{callToAction.content}</p>
         ) : (
           <p>Tidak ada call to action.</p>
         )}
@@ -86,7 +84,7 @@ export default async function AboutPage() {
         <h2 className="text-2xl font-semibold mb-2">Skill</h2>
         {Array.isArray(skills) && skills.length > 0 ? (
           <ul className="flex flex-wrap justify-center gap-3">
-            {skills.map((skill: any) => (
+            {skills.map((skill: Skill) => (
               <li
                 key={skill.id}
                 className="border rounded px-3 py-1 bg-gray-50 flex items-center gap-2"
@@ -113,7 +111,7 @@ export default async function AboutPage() {
         <h2 className="text-2xl font-semibold mb-2">Tools</h2>
         {Array.isArray(tools) && tools.length > 0 ? (
           <ul className="flex flex-wrap justify-center gap-3">
-            {tools.map((tool: any) => (
+            {tools.map((tool: Tool) => (
               <li
                 key={tool.id}
                 className="border rounded px-3 py-1 bg-gray-50 flex items-center gap-2"
@@ -140,14 +138,17 @@ export default async function AboutPage() {
         <h2 className="text-2xl font-semibold mb-2">Certificate</h2>
         {Array.isArray(certificates) && certificates.length > 0 ? (
           <ul className="grid gap-4">
-            {certificates.map((cert: any) => (
+            {certificates.map((cert: Certificate) => (
               <li
                 key={cert.id}
                 className="border rounded p-3 text-left flex flex-col items-start"
               >
                 <span className="font-semibold">{cert.title}</span>
                 <span className="text-sm text-gray-600">
-                  {cert.issuer} {cert.year && `- ${cert.year}`}
+                  {cert.issuer}{" "}
+                  {cert.issueDate
+                    ? `- ${new Date(cert.issueDate).getFullYear()}`
+                    : ""}
                 </span>
                 {cert.image && (
                   <img

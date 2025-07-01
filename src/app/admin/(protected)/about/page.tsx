@@ -9,14 +9,15 @@ import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
 import AboutCard from "@/components/shared/AboutCard";
+import { About } from "@prisma/client";
 
 export default function AboutPage() {
-  const [aboutList, setAboutList] = useState<any[]>([]);
+  const [aboutList, setAboutList] = useState<About[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
-    about: any | null;
+    about: About | null;
   }>({
     isOpen: false,
     about: null,
@@ -31,7 +32,7 @@ export default function AboutPage() {
     setIsLoading(true);
     try {
       const res = await fetch("/api/about");
-      const data = await res.json();
+      const data: About[] = await res.json();
       setAboutList(data);
     } catch {
       addToast({
@@ -59,11 +60,11 @@ export default function AboutPage() {
     router.push("/admin/about/new");
   };
 
-  const handleEdit = (about: any) => {
+  const handleEdit = (about: About) => {
     router.push(`/admin/about/${about.id}/edit`);
   };
 
-  const handleDelete = (about: any) => {
+  const handleDelete = (about: About) => {
     setDeleteModal({ isOpen: true, about });
   };
 

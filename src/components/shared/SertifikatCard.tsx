@@ -1,19 +1,13 @@
 "use client";
 
 import React from "react";
+import { Certificate } from "@prisma/client";
 
 interface SertifikatCardProps {
-  cert: {
-    id: string;
-    title: string;
-    issuer: string;
-    issueDate: string;
-    expireDate?: string | null;
-    image?: string | null;
-  };
+  cert: Certificate;
   index: number;
-  onEdit: (cert: any) => void;
-  onDelete: (cert: any) => void;
+  onEdit: (cert: Certificate) => void;
+  onDelete: (cert: Certificate) => void;
   showActions?: boolean;
   variant?: "admin" | "public";
 }

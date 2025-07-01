@@ -9,9 +9,10 @@ import UserMenu from "./UserMenu";
 import TimeDisplay from "./TimeDisplay";
 import { useSidebar } from "./AdminSidebar";
 import SplashScreen from "./SplashScreen";
+import { Session } from "next-auth";
 
 interface AdminHeaderProps {
-  session: any;
+  session: Session;
 }
 
 export default function AdminHeader({ session }: AdminHeaderProps) {

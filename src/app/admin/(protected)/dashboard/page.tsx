@@ -302,7 +302,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions Section */}
-        <div className="mt-8">
+        <div className="mt-8 hidden md:block">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {DASHBOARD_CARDS.slice(0, 4).map((card) => (
               <QuickActionCard

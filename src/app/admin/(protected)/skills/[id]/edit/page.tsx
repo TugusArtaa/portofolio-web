@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import SkillForm from "../../_form";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import { Skill } from "@prisma/client";
 
 export default function EditSkillPage({
   params,
@@ -10,7 +11,7 @@ export default function EditSkillPage({
   params: Promise<{ id: string }>;
 }) {
   const actualParams = use(params);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Skill | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,6 +29,7 @@ export default function EditSkillPage({
             name: skill.name || "",
             level: skill.level || "",
             icon: skill.icon || "",
+            createdAt: skill.createdAt,
           });
         }
       })
@@ -110,7 +112,7 @@ export default function EditSkillPage({
 
   return (
     <SkillForm
-      existing={data}
+      existing={data as Skill}
       onSuccess={() => (window.location.href = "/admin/skills")}
       onCancel={() => (window.location.href = "/admin/skills")}
     />

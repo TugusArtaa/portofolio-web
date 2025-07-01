@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import ToolForm from "../../_form";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import { Tool } from "@prisma/client";
 
 export default function EditToolPage({
   params,
@@ -10,7 +11,7 @@ export default function EditToolPage({
   params: Promise<{ id: string }>;
 }) {
   const actualParams = use(params);
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Tool | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,6 +29,7 @@ export default function EditToolPage({
             name: tool.name || "",
             level: tool.level || "",
             icon: tool.icon || "",
+            createdAt: tool.createdAt,
           });
         }
       })
@@ -110,7 +112,7 @@ export default function EditToolPage({
 
   return (
     <ToolForm
-      existing={data}
+      existing={data as Tool}
       onSuccess={() => (window.location.href = "/admin/tools")}
       onCancel={() => (window.location.href = "/admin/tools")}
     />

@@ -9,14 +9,15 @@ import EmptyState from "@/components/shared/EmptyState";
 import Pagination from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
 import ToolsCard from "@/components/shared/ToolsCard";
+import { Tool } from "@prisma/client";
 
 export default function ToolsPage() {
-  const [tools, setTools] = useState<any[]>([]);
+  const [tools, setTools] = useState<Tool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
-    tool: any | null;
+    tool: Tool | null;
   }>({
     isOpen: false,
     tool: null,
@@ -31,7 +32,7 @@ export default function ToolsPage() {
     setIsLoading(true);
     try {
       const res = await fetch("/api/tools");
-      const data = await res.json();
+      const data: Tool[] = await res.json();
       setTools(data);
     } catch {
       addToast({
@@ -59,11 +60,11 @@ export default function ToolsPage() {
     router.push("/admin/tools/new");
   };
 
-  const handleEdit = (tool: any) => {
+  const handleEdit = (tool: Tool) => {
     router.push(`/admin/tools/${tool.id}/edit`);
   };
 
-  const handleDelete = (tool: any) => {
+  const handleDelete = (tool: Tool) => {
     setDeleteModal({ isOpen: true, tool });
   };
 

@@ -11,6 +11,7 @@ import {
   validateField,
   aboutValidationRules,
 } from "@/lib/validation";
+import { About } from "@prisma/client";
 
 const ABOUT_IDS = [
   {
@@ -82,10 +83,10 @@ const ABOUT_IDS = [
     color:
       "bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-600",
   },
-];
+] as const;
 
 interface AboutFormProps {
-  existing?: any;
+  existing?: About;
   onSuccess?: () => void;
   onCancel?: () => void;
   usedIds?: string[];
@@ -119,14 +120,20 @@ export default function AboutForm({
   const availableIds = existing
     ? [
         {
-          ...ABOUT_IDS.find((x) => x.value === existing.id),
           value: existing.id,
           label:
             ABOUT_IDS.find((x) => x.value === existing.id)?.label ||
             existing.id,
+          icon: ABOUT_IDS.find((x) => x.value === existing.id)?.icon ?? "",
+          color: ABOUT_IDS.find((x) => x.value === existing.id)?.color ?? "",
         },
       ]
-    : ABOUT_IDS.filter((opt) => !usedIds.includes(opt.value));
+    : ABOUT_IDS.filter((opt) => !usedIds.includes(opt.value)).map((opt) => ({
+        value: opt.value,
+        label: opt.label,
+        icon: opt.icon ?? "",
+        color: opt.color ?? "",
+      }));
 
   const displayedIds = showAllIds ? availableIds : availableIds.slice(0, 6);
 
@@ -224,7 +231,12 @@ export default function AboutForm({
     >
       {/* Custom ID Picker */}
       <AboutIdPicker
-        ABOUT_IDS={ABOUT_IDS}
+        ABOUT_IDS={ABOUT_IDS.map((opt) => ({
+          value: opt.value,
+          label: opt.label,
+          icon: opt.icon ?? "",
+          color: opt.color ?? "",
+        }))}
         existing={existing}
         availableIds={availableIds}
         displayedIds={displayedIds}

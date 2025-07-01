@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ProjectForm from "../../_form";
 import React from "react";
 import LoadingSkeleton from "@/components/shared/LoadingSkeleton";
+import { Project } from "@prisma/client";
 
 export default function EditProjectPage({
   params,
@@ -13,7 +14,7 @@ export default function EditProjectPage({
   const [unwrappedParams, setUnwrappedParams] = useState<{ id: string } | null>(
     null
   );
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<Project | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -130,7 +131,7 @@ export default function EditProjectPage({
 
   return (
     <ProjectForm
-      existing={data}
+      existing={data as Project}
       onSuccess={() => (window.location.href = "/admin/projects")}
     />
   );

@@ -1,18 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { Project } from "@prisma/client";
 
 interface ProjectCardProps {
-  project: {
-    id: string;
-    title: string;
-    description: string;
-    coverImage?: string;
-    techStack: string[];
-    updatedAt: string;
-  };
+  project: Project;
   index: number;
-  onDelete: (project: any) => void;
+  onDelete: (project: Project) => void;
   formatDate: (dateString: string) => string;
   showActions?: boolean;
   variant?: "admin" | "public";
@@ -99,7 +93,15 @@ export default function ProjectCard({
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>{formatDate(project.updatedAt)}</span>
+            <span>
+              {formatDate(
+                typeof project.updatedAt === "string"
+                  ? project.updatedAt
+                  : project.updatedAt instanceof Date
+                  ? project.updatedAt.toISOString()
+                  : ""
+              )}
+            </span>
           </div>
         </div>
 

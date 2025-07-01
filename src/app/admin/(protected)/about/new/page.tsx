@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AboutForm from "../_form";
+import { About } from "@prisma/client";
 
 export default function AboutNewPage() {
   const [usedIds, setUsedIds] = useState<string[]>([]);
@@ -10,7 +11,7 @@ export default function AboutNewPage() {
   useEffect(() => {
     fetch("/api/about")
       .then((res) => res.json())
-      .then((data) => setUsedIds(data.map((item: any) => item.id)))
+      .then((data: About[]) => setUsedIds(data.map((item) => item.id)))
       .finally(() => setIsLoading(false));
   }, []);
 
