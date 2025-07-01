@@ -178,7 +178,7 @@ export default function AdminHeader({ session }: AdminHeaderProps) {
     setShowSplash(true);
     setTimeout(() => {
       signOut({ callbackUrl: "/" });
-    }, 1200);
+    }, 4000);
   };
 
   if (showSplash) {

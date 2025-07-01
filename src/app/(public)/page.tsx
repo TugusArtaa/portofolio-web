@@ -59,13 +59,21 @@ export default function HomePage() {
 
             {/* Buttons */}
             <div className="flex flex-row gap-3 sm:gap-4 pt-4 items-start">
-              <button className="group relative overflow-hidden bg-gradient-to-r from-sky-700 to-sky-400 hover:from-transparent hover:to-transparent dark:bg-gradient-to-r dark:from-sky-500 dark:to-sky-400 dark:hover:from-transparent dark:hover:to-transparent text-white hover:text-sky-900 dark:hover:text-sky-400 font-semibold border-2 border-sky-400 dark:border-sky-400 hover:border-sky-400 hover:dark:border-sky-400 px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-md shadow-sky-900/20 dark:shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base text-left">
+              <a
+                href="/cv/CV_ATS_Putu_Aguss.pdf"
+                download
+                className="group relative overflow-hidden bg-gradient-to-r from-sky-700 to-sky-400 hover:from-transparent hover:to-transparent dark:bg-gradient-to-r dark:from-sky-500 dark:to-sky-400 dark:hover:from-transparent dark:hover:to-transparent text-white hover:text-sky-900 dark:hover:text-sky-400 font-semibold border-2 border-sky-400 dark:border-sky-400 hover:border-sky-400 hover:dark:border-sky-400 px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-md shadow-sky-900/20 dark:shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base text-left active:translate-y-1 active:scale-95"
+              >
                 <span className="relative z-10">Download CV</span>
-              </button>
+              </a>
 
-              <button className="group relative overflow-hidden bg-transparent hover:bg-gradient-to-r hover:from-sky-700 hover:to-sky-400 dark:hover:bg-gradient-to-r dark:hover:from-sky-500 dark:hover:to-sky-400 border-2 border-sky-400 dark:border-sky-400 text-sky-900 dark:text-sky-400 hover:text-white dark:hover:text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-md shadow-sky-400/20 dark:shadow-sky-400/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base text-left">
+              <Link
+                href="/contact"
+                passHref
+                className="group relative overflow-hidden bg-transparent hover:bg-gradient-to-r hover:from-sky-700 hover:to-sky-400 dark:hover:bg-gradient-to-r dark:hover:from-sky-500 dark:hover:to-sky-400 border-2 border-sky-400 dark:border-sky-400 text-sky-900 dark:text-sky-400 hover:text-white dark:hover:text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-md shadow-sky-400/20 dark:shadow-sky-400/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-0.5 transition-all duration-300 text-sm sm:text-base text-left active:translate-y-1 active:scale-95"
+              >
                 <span className="relative z-10">Contact Me</span>
-              </button>
+              </Link>
             </div>
 
             {/* Stats */}
@@ -84,19 +92,24 @@ export default function HomePage() {
           {/* Kanan: Profile Card */}
           <div className="flex justify-center lg:justify-end items-center w-full lg:w-2/5 mb-8 lg:mb-0">
             <div className="relative">
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-sky-400 to-sky-500 dark:from-sky-500 dark:to-sky-400 rounded-full blur-xl opacity-20 animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-sky-500 to-sky-400 dark:from-sky-400 dark:to-sky-500 rounded-full blur-xl opacity-20 animate-pulse animation-delay-1000"></div>
-
               {/* Profile Card Container */}
               <div className="relative z-10 transform hover:scale-105 transition-transform duration-300">
                 <ProfileCard
                   name="Putu Aguss"
                   title="Front-end Developer"
-                  avatarUrl="/Avatar.jpg"
                   handle="Putuaguss"
                   status="Simplicity."
-                  contactText="Hello!"
+                  contactText="Contact Me"
+                  iconUrl="/photo/iconpattern.png"
+                  avatarUrl="/photo/tuagus_photo.svg"
+                  miniAvatarUrl="/photo/tuagus_profil.svg"
+                  behindGradient="to-br from-blue-400 via-purple-500 to-pink-600"
+                  innerGradient="to-r from-blue-500 to-purple-500"
+                  showUserInfo={true}
+                  enableTilt={true}
+                  onContactClick={() =>
+                    (window.location.href = "mailto:ptaguss2@gmail.com")
+                  }
                 />
               </div>
             </div>
@@ -112,7 +125,7 @@ export default function HomePage() {
             <div className="w-full lg:w-1/2 flex justify-center">
               <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[400px] lg:h-[400px]">
                 <TiltedCard
-                  imageSrc="/About.jpg"
+                  imageSrc="/photo/about_photo.svg"
                   altText="About Me"
                   captionText="This is me!"
                   containerHeight="100%"
@@ -125,7 +138,10 @@ export default function HomePage() {
                   showTooltip={true}
                   displayOverlayContent={true}
                   overlayContent={
-                    <p className="absolute top-6 left-6 bg-sky-900 dark:bg-sky-500 text-white px-4 py-1 rounded-3xl text-base font-medium shadow-lg shadow-sky-900/20 dark:shadow-sky-500/20">
+                    <p
+                      className="absolute top-6 left-6 px-6 py-2 rounded-2xl bg-gray-700/70 text-white text-xl font-bold shadow-lg"
+                      style={{ backdropFilter: "blur(4px)" }}
+                    >
                       Hello!
                     </p>
                   }
@@ -144,7 +160,7 @@ export default function HomePage() {
                 support my journey.
               </p>
               <Link href="/about" passHref>
-                <button className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-sky-700 to-sky-400 dark:bg-gradient-to-r dark:from-sky-500 dark:to-sky-400 hover:from-sky-800 hover:to-sky-500 dark:hover:from-sky-400 dark:hover:to-sky-300 text-white font-semibold rounded-lg transition-all duration-300 shadow-md shadow-sky-900/20 dark:shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-0.5 text-left">
+                <button className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-sky-700 to-sky-400 dark:bg-gradient-to-r dark:from-sky-500 dark:to-sky-400 hover:from-sky-800 hover:to-sky-500 dark:hover:from-sky-400 dark:hover:to-sky-300 text-white font-semibold rounded-lg transition-all duration-300 shadow-md shadow-sky-900/20 dark:shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-0.5 text-left active:translate-y-1 active:scale-95">
                   Learn More
                   <svg
                     className="ml-2 w-4 h-4"
@@ -178,9 +194,9 @@ export default function HomePage() {
                   {/* Gambar Besar - Kiri */}
                   <div className="flex-1">
                     <img
-                      src="/About.jpg"
+                      src="/photo/photo_project_left.svg"
                       alt="Main Project"
-                      className="w-full h-full object-cover rounded-lg shadow-md shadow-slate-400/20 dark:shadow-slate-950/40 grayscale hover:grayscale-0 transition-all duration-300"
+                      className="w-full h-full object-cover rounded-lg shadow-lg shadow-slate-400/30 dark:shadow-slate-900/50 grayscale hover:grayscale-0 transition-all duration-700 ease-out transform hover:scale-105 hover:shadow-2xl hover:shadow-sky-500/40 dark:hover:shadow-sky-400/50 active:scale-110 active:grayscale-0 active:shadow-2xl active:shadow-sky-600/50 dark:active:shadow-sky-300/60 cursor-pointer sm:active:scale-[1.15] sm:active:shadow-3xl"
                     />
                   </div>
 
@@ -189,18 +205,18 @@ export default function HomePage() {
                     {/* Gambar Kecil Atas */}
                     <div className="flex-1">
                       <img
-                        src="/About.jpg"
+                        src="/photo/photo_project_right_1.svg"
                         alt="Project 2"
-                        className="w-full h-full object-cover rounded-lg shadow-md shadow-slate-400/20 dark:shadow-slate-950/40 grayscale hover:grayscale-0 transition-all duration-300"
+                        className="w-full h-full object-cover rounded-lg shadow-md shadow-slate-400/25 dark:shadow-slate-900/40 grayscale hover:grayscale-0 transition-all duration-600 ease-out transform hover:scale-110 hover:rotate-2 hover:shadow-xl hover:shadow-sky-500/35 dark:hover:shadow-sky-400/45 active:scale-[1.2] active:grayscale-0 active:rotate-3 active:shadow-xl active:shadow-sky-600/45 dark:active:shadow-sky-300/55 cursor-pointer sm:active:scale-[1.25] sm:active:rotate-[5deg]"
                       />
                     </div>
 
                     {/* Gambar Kecil Bawah */}
                     <div className="flex-1">
                       <img
-                        src="/About.jpg"
+                        src="/photo/photo_project_right_2.svg"
                         alt="Project 3"
-                        className="w-full h-full object-cover rounded-lg shadow-md shadow-slate-400/20 dark:shadow-slate-950/40 grayscale hover:grayscale-0 transition-all duration-300"
+                        className="w-full h-full object-cover rounded-lg shadow-md shadow-slate-400/25 dark:shadow-slate-900/40 grayscale hover:grayscale-0 transition-all duration-600 ease-out transform hover:scale-110 hover:-rotate-2 hover:shadow-xl hover:shadow-sky-500/35 dark:hover:shadow-sky-400/45 active:scale-[1.2] active:grayscale-0 active:-rotate-3 active:shadow-xl active:shadow-sky-600/45 dark:active:shadow-sky-300/55 cursor-pointer sm:active:scale-[1.25] sm:active:-rotate-[5deg]"
                       />
                     </div>
                   </div>
@@ -217,22 +233,24 @@ export default function HomePage() {
                 Here are some projects I've completed and ones I'm currently
                 working on — Click below to explore more.
               </p>
-              <button className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-sky-400 to-sky-700 dark:bg-gradient-to-r dark:from-sky-400 dark:to-sky-500 hover:from-sky-500 hover:to-sky-800 dark:hover:from-sky-300 dark:hover:to-sky-400 text-white font-semibold rounded-lg transition-all duration-300 shadow-md shadow-sky-400/20 dark:shadow-sky-400/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-500/30 transform hover:-translate-y-0.5 text-left">
-                View Projects
-                <svg
-                  className="ml-2 w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+              <Link href="/projects" passHref>
+                <button className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-sky-400 to-sky-700 dark:bg-gradient-to-r dark:from-sky-400 dark:to-sky-500 hover:from-sky-500 hover:to-sky-800 dark:hover:from-sky-300 dark:hover:to-sky-400 text-white font-semibold rounded-lg transition-all duration-300 shadow-md shadow-sky-400/20 dark:shadow-sky-400/20 hover:shadow-lg hover:shadow-sky-900/30 dark:hover:shadow-sky-500/30 transform hover:-translate-y-0.5 text-left active:translate-y-1 active:scale-95">
+                  View Projects
+                  <svg
+                    className="ml-2 w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -250,7 +268,7 @@ export default function HomePage() {
               and create something amazing together.
             </p>
             <Link href="/contact" passHref>
-              <button className="inline-flex items-center px-8 sm:px-12 font-bold rounded-lg transition-all duration-300 shadow-none text-3xl sm:text-2xl text-sky-600 dark:text-sky-400 focus:outline-none hover:text-sky-400 dark:hover:text-sky-300 hover:scale-105 group">
+              <button className="inline-flex items-center px-8 sm:px-12 font-bold rounded-lg transition-all duration-300 shadow-none text-3xl sm:text-2xl text-sky-600 dark:text-sky-400 focus:outline-none hover:text-sky-400 dark:hover:text-sky-300 hover:scale-105 group active:translate-y-1 active:scale-95">
                 Get In Touch
                 <svg
                   className="ml-2 w-8 h-8 transition-transform duration-300 group-hover:translate-x-1"

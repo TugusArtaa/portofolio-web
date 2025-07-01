@@ -87,7 +87,7 @@ export default function SplashScreen({
               flex items-center justify-center shadow-lg ${logoRotateClass}`}
             ></div>
             <img
-              src="/Web-logo.png"
+              src="/logo/Web-logo.svg"
               alt="Logo"
               className="absolute w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain"
               style={{ pointerEvents: "none" }}

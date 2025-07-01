@@ -49,7 +49,7 @@ export default function LoginPage() {
         setShowSplash(true);
         setTimeout(() => {
           router.push("/admin/dashboard");
-        }, 1500);
+        }, 4000);
       } else {
         setError("Email atau password salah. Silakan coba lagi.");
         setIsLoading(false);

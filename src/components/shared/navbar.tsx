@@ -65,8 +65,7 @@ export function Navbar({
       {/* Transparent Header Container */}
       <header
         className={cn(
-          // Ganti background dan shadow agar sesuai palette
-          "fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm shadow-lg transition-all duration-300 border-b border-sky-400/40 dark:border-sky-400/40",
+          "fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm shadow-lg shadow-slate-950/5 dark:shadow-sky-500/10 transition-all duration-300 border-b border-sky-400/40 dark:border-sky-400/40",
           className
         )}
         style={style}
@@ -76,7 +75,7 @@ export function Navbar({
             {/* Logo/Brand - Left Side */}
             <div className="flex-shrink-0">
               <Link href="/" className="flex items-center space-x-2 group">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 ease-out shadow-lg shadow-purple-500/25">
+                <div className="w-8 h-8 bg-gradient-to-r from-sky-500 to-sky-400 rounded-lg flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 ease-out shadow-lg shadow-purple-500/25">
                   <svg
                     className="w-8 h-8 transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 ease-out"
                     viewBox="0 0 64 64"
@@ -114,7 +113,7 @@ export function Navbar({
 
             {/* Center Navigation Menu - Rounded Border Container */}
             <div className="hidden md:block absolute pb-0.5 left-1/2 -translate-x-1/2">
-              <nav className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border border-sky-400/40 dark:border-sky-400/40 rounded-full px-4 py-2 shadow-lg shadow-sky-400/10 dark:shadow-sky-500/10 hover:shadow-sky-400/20 dark:hover:shadow-sky-500/20 transition-all duration-300">
+              <nav className="bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border border-sky-400/40 dark:border-sky-400/40 rounded-full px-4 py-2 shadow-md shadow-sky-400/10 dark:shadow-sky-500/10 hover:shadow-sky-400/20 dark:hover:shadow-sky-500/20 transition-all duration-300">
                 <div className="flex items-center space-x-1">
                   {links.map((link, index) => (
                     <Link
