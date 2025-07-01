@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Project } from "@prisma/client";
+import Image from "next/image";
 
 interface ProjectCardProps {
   project: Project;
@@ -31,10 +32,14 @@ export default function ProjectCard({
       <div className="relative aspect-video overflow-hidden rounded-t-3xl">
         {project.coverImage ? (
           <>
-            <img
+            <Image
               src={project.coverImage}
               alt={project.title}
+              fill
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              style={{ objectFit: "cover" }}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority={false}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </>

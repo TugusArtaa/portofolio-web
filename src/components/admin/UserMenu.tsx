@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { signOut } from "next-auth/react";
 import { Session } from "next-auth";
+import Image from "next/image";
 
 interface UserMenuProps {
   session: Session;
@@ -41,9 +42,11 @@ export default function UserMenu({
       >
         <div className="relative">
           {session?.user?.image ? (
-            <img
+            <Image
               src={session.user.image}
               alt={session.user.name || "User"}
+              width={32}
+              height={32}
               className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-500/20"
             />
           ) : (

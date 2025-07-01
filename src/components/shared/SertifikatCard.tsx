@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Certificate } from "@prisma/client";
+import Image from "next/image";
 
 interface SertifikatCardProps {
   cert: Certificate;
@@ -62,10 +63,14 @@ export default function SertifikatCard({
           style={{ aspectRatio: "297/210" }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-          <img
+          <Image
             src={cert.image}
             alt={cert.title}
+            fill
             className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105"
+            style={{ objectFit: "contain" }}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={false}
           />
           {/* Shimmer effect on hover */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />

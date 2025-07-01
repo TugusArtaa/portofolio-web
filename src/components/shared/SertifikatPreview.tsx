@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 interface SertifikatPreviewProps {
   title: string;
@@ -91,10 +92,14 @@ export default function SertifikatPreview({
             {image ? (
               <div className="relative overflow-hidden">
                 <div className="w-full aspect-[297/210] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
-                  <img
+                  <Image
                     src={image}
                     alt={title}
+                    fill
                     className="object-cover w-full h-full"
+                    style={{ objectFit: "cover" }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={false}
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>

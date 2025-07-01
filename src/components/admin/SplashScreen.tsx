@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function SplashScreen({
   messages = ["Loading..."],
@@ -86,12 +87,15 @@ export default function SplashScreen({
               bg-gradient-to-br from-blue-500 via-purple-600 to-pink-600 
               flex items-center justify-center shadow-lg ${logoRotateClass}`}
             ></div>
-            <img
+            <Image
               src="/logo/Web-logo.svg"
               alt="Logo"
+              width={80}
+              height={80}
               className="absolute w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain"
               style={{ pointerEvents: "none" }}
               draggable={false}
+              priority
             />
           </div>
         </div>

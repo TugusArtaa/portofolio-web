@@ -1,5 +1,6 @@
 import React from "react";
 import { About, Skill, Tool, Certificate } from "@prisma/client";
+import Image from "next/image";
 
 // Fungsi fetch data dari API public
 async function getData(endpoint: string) {
@@ -151,10 +152,12 @@ export default async function AboutPage() {
                     : ""}
                 </span>
                 {cert.image && (
-                  <img
+                  <Image
                     src={cert.image}
                     alt={cert.title}
-                    className="w-32 mt-2 rounded"
+                    width={283}
+                    height={200}
+                    className="w-96 mt-2 rounded"
                   />
                 )}
               </li>

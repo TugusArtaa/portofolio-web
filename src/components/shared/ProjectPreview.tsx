@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface ProjectPreviewProps {
   title: string;
   description: string;
@@ -17,13 +19,14 @@ export default function ProjectPreview({
     <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl shadow-md border border-white/40 dark:border-slate-700/40 overflow-hidden">
       <div className="aspect-video relative overflow-hidden">
         {previewImage ? (
-          <img
+          <Image
             src={previewImage}
             alt="Preview"
+            fill
             className="w-full h-full object-cover"
-            onError={() => {
-              /* Handle error */
-            }}
+            style={{ objectFit: "cover" }}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={false}
           />
         ) : (
           <div className="h-full bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 dark:from-slate-700 dark:via-slate-600 dark:to-slate-500 flex items-center justify-center">
