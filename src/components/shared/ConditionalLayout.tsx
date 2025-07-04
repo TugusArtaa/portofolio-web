@@ -1,8 +1,10 @@
 "use client";
 
+import type React from "react";
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
+import GridBackground from "@/components/ui/grid-background";
 
 export default function ConditionalLayout({
   children,
@@ -13,14 +15,20 @@ export default function ConditionalLayout({
   const isAdminRoute = pathname.startsWith("/admin");
 
   if (isAdminRoute) {
-    return <>{children}</>;
+    return (
+      <div className="min-h-screen bg-white dark:bg-slate-950">{children}</div>
+    );
   }
 
   return (
     <>
-      <Navbar className="" />
-      <div className="flex flex-col min-h-screen">
-        <main className="flex-1 px-4">{children}</main>
+      {/* Grid Background - Fixed but behind everything */}
+      <GridBackground />
+
+      {/* Content */}
+      <div className="relative z-10">
+        <Navbar className="" />
+        <main className="px-4">{children}</main>
         <Footer />
       </div>
     </>

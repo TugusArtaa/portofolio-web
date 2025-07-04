@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import ConditionalLayout from "@/components/shared/ConditionalLayout";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { ToastProvider } from "@/components/ui/toast";
@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id">
-      <body className="bg-white dark:bg-slate-950">
+      <body>
         {/* Provider untuk tema dark/light */}
         <ThemeProvider>
           {/* Provider untuk notifikasi toast */}
