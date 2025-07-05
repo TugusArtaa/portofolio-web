@@ -67,7 +67,7 @@ export default function EducationSection() {
                   <p className="text-sky-600 dark:text-sky-400 font-semibold text-base sm:text-lg mb-1">
                     Politeknik Negeri Bali
                   </p>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">
                     2022 - 2025
                   </p>
                 </div>
@@ -75,7 +75,7 @@ export default function EducationSection() {
 
               {/* IPK Card */}
               <div className="mb-6">
-                <div className="flex items-center justify-between py-4 px-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all duration-200">
+                <div className="flex items-center justify-between py-4 px-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200/50">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                     <span className="text-slate-700 dark:text-neutral-200 font-medium text-sm sm:text-base">
@@ -99,9 +99,9 @@ export default function EducationSection() {
             {/* Relevant Courses */}
             <div className="space-y-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
                   <svg
-                    className="w-4 h-4 text-white"
+                    className="w-6 h-6 text-white"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -123,7 +123,7 @@ export default function EducationSection() {
                 {displayedCourses.map((course, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between py-3 px-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all duration-200"
+                    className="flex items-center justify-between py-3 px-4 bg-white/50 dark:bg-slate-800/50 rounded-xl border border-slate-200/50 dark:border-slate-700/50"
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 bg-sky-400 rounded-full"></div>
@@ -153,12 +153,7 @@ export default function EducationSection() {
                 <div className="text-center pt-4">
                   <button
                     onClick={() => setShowAllCourses(!showAllCourses)}
-                    className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3
-        bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-700 hover:to-sky-600
-        dark:from-sky-500 dark:to-sky-400 dark:hover:from-sky-600 dark:hover:to-sky-500
-        text-white font-semibold rounded-xl transition-all duration-300
-        shadow-lg shadow-sky-900/20 dark:shadow-sky-500/20 hover:shadow-xl hover:shadow-sky-900/30
-        dark:hover:shadow-sky-400/30 transform hover:-translate-y-1 text-sm sm:text-base"
+                    className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-700 hover:to-sky-600 dark:from-sky-500 dark:to-sky-400 dark:hover:from-sky-600 dark:hover:to-sky-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-sky-400/40 transform hover:-translate-y-1 text-sm sm:text-base"
                   >
                     {showAllCourses
                       ? "Show Less"
@@ -186,9 +181,9 @@ export default function EducationSection() {
 
           {/* Right Column - Academic Journey Story */}
           <div className="space-y-6">
-            <div className="relative bg-gradient-to-br from-slate-50/80 to-sky-50/50 dark:from-slate-800/50 dark:to-sky-900/20 rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50">
+            <div className="relative bg-white/50 dark:bg-slate-800/50 rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50">
               {/* Decorative elements */}
-              <div className="absolute top-4 right-4 w-8 h-8 opacity-20">
+              <div className="absolute top-4 right-4 w-8 h-8 opacity-30">
                 <svg
                   viewBox="0 0 24 24"
                   className="w-full h-full text-yellow-500"
@@ -200,21 +195,6 @@ export default function EducationSection() {
 
               <div className="relative space-y-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-6 h-6 bg-gradient-to-br from-sky-400 to-blue-500 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-3 h-3 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                  </div>
                   <h4 className="text-lg font-bold text-slate-800 dark:text-neutral-100">
                     My Academic Journey
                   </h4>
@@ -229,10 +209,8 @@ export default function EducationSection() {
                       </span>{" "}
                       with a strong foundation in UI/UX design, I recently
                       completed my Diploma in Informatics Management at
-                      Politeknik Negeri Bali (2022–2025), graduating{" "}
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">
-                        Magna Cum Laude with a GPA of 3.98.
-                      </span>
+                      Politeknik Negeri Bali (2022–2025), graduated with a GPA
+                      of 3.98.
                       {!showFullStory && (
                         <>
                           {" "}
@@ -279,20 +257,15 @@ export default function EducationSection() {
                           — excited to bring ideas to life, improve the way
                           people interact with technology, and{" "}
                           <span className="font-semibold text-slate-700 dark:text-slate-300">
-                            shape digital experiences that truly matter
-                          </span>
-                          .
-                        </p>
-
-                        {/* Show less button - positioned after the quote */}
-                        <div className="text-center pt-2">
+                            shape digital experiences that truly matter.
+                          </span>{" "}
                           <button
                             onClick={() => setShowFullStory(false)}
                             className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 font-medium underline underline-offset-2 transition-colors duration-200"
                           >
                             Show less
                           </button>
-                        </div>
+                        </p>
                       </div>
                     )}
                   </div>
@@ -305,8 +278,8 @@ export default function EducationSection() {
                       </span>{" "}
                       with a strong foundation in UI/UX design, I recently
                       completed my Diploma in Informatics Management at
-                      Politeknik Negeri Bali (2022–2025), graduating Magna Cum
-                      Laude with a GPA of 3.98.
+                      Politeknik Negeri Bali (2022–2025), graduated with a GPA
+                      of 3.98.
                     </p>
 
                     <p>

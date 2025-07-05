@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 
 interface Experience {
   id: number;
@@ -20,6 +21,9 @@ interface ExperienceSectionProps {
 export default function ExperienceSection({
   experiences,
 }: ExperienceSectionProps) {
+  const [showAll, setShowAll] = useState(false);
+  const displayedExperiences = showAll ? experiences : experiences.slice(0, 3);
+
   return (
     <section className="mb-20 sm:mb-24">
       <div className="text-center mb-12 sm:mb-16">
@@ -36,7 +40,7 @@ export default function ExperienceSection({
         <div className="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-gradient-to-b from-sky-400 to-blue-600"></div>
 
         <div className="space-y-12 sm:space-y-16">
-          {experiences.map((exp, index) => (
+          {displayedExperiences.map((exp, index) => (
             <div key={exp.id} className="relative">
               {/* Timeline Dot */}
               <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-sky-400 rounded-full border-4 border-white dark:border-slate-900 shadow-lg z-10"></div>
@@ -132,6 +136,33 @@ export default function ExperienceSection({
             </div>
           ))}
         </div>
+        {experiences.length > 3 && (
+          <div className="text-center mt-8 relative z-10">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-700 hover:to-sky-600 dark:from-sky-500 dark:to-sky-400 dark:hover:from-sky-600 dark:hover:to-sky-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-sky-900/20 dark:shadow-sky-500/20 hover:shadow-xl hover:shadow-sky-900/30 dark:hover:shadow-sky-400/30 transform hover:-translate-y-1 text-sm sm:text-base"
+            >
+              {showAll
+                ? "Show Less"
+                : `View more experience (${experiences.length - 3})`}
+              <svg
+                className={`ml-2 w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 ${
+                  showAll ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

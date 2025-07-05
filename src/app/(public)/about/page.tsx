@@ -52,6 +52,17 @@ const experiences = [
       "Created visual content for social media campaigns, branding materials, and marketing collaterals. Worked with various clients across different industries and managed multiple design projects simultaneously.",
     logo: "/logo/Web-logo.svg",
   },
+  {
+    id: 4,
+    title: "Joki Website",
+    company: "Bisnis Pribadi",
+    startDate: "Mar 2021",
+    endDate: "May 2022",
+    location: "Jakarta, Indonesia",
+    description:
+      "Created visual content for social media campaigns, branding materials, and marketing collaterals. Worked with various clients across different industries and managed multiple design projects simultaneously.",
+    logo: "/logo/Web-logo.svg",
+  },
 ];
 
 export default async function AboutPage() {
